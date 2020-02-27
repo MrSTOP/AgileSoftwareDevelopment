@@ -31,4 +31,8 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
     <select id="moveVideoToRecycleBinProcByIdAndType" parameterType="hashmap" statementType="CALLABLE">
         {CALL moveVideoToRecycleBinProc(#{videoId}, #{businessId}, #{uid})}
     </select>
+
+    <select id="selectAllRecycleBinVideo" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
+        SELECT * FROM deletevideo
+    </select>
 </mapper>

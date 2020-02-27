@@ -1,5 +1,6 @@
 package com.qianfeng.ykw.dao;
 
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.Video;
 
 import java.util.List;
@@ -44,9 +45,16 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideo();
+    
     /**
      * 将视频移到回收站
      * @param param
      */
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
+    
+    /**
+     * 获取回收站中所有视频
+     * @return
+     */
+    List<DeleteVideo> selectAllRecycleBinVideo();
 }
