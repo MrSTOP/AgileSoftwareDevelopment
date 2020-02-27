@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.ykw.dao.IVideoDAO">
+    <insert id="insertNewVideo" parameterType="com.qianfeng.ykw.pojo.Video">
+        INSERT INTO video (video_title, video_src, video_date, business_id)
+        VALUES (#{videoTitle}, #{videoSrc}, SYSDATE(), #{businessId})
+    </insert>
+    <select id="selectVideoInfoByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.Video">
+        SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo
+        WHERE video.business_id = businessinfo.business_id
+        AND video.business_id=#{businessId}
+    </select>
+</mapper>

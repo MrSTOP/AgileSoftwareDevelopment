@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.ykw.dao.BusinessInfoDAO">
+    <select id="selectByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.BusinessInfo">
+        SELECT * FROM businessinfo WHERE business_id=#{businessId}
+    </select>
+<!--    创建对应的基础信息-->
+    <insert id="insertBlankBusinessInfo" parameterType="int">
+        INSERT INTO businessinfo (business_id) VALUES (#{businessId})
+    </insert>
+</mapper>
