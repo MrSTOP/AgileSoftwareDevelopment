@@ -74,6 +74,6 @@ public class VideoController {
             param.put("uid", systemUser.getUid());
         }
         videoService.moveVideoToRecycleBinProcByIdAndType(param);
-        return "/VideoController/queryVideo";
+        return "redirect:VideoController/queryVideo";
     }
 }
