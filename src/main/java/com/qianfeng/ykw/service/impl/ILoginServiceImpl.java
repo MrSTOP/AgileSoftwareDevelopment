@@ -44,9 +44,8 @@ public class ILoginServiceImpl implements ILoginService {
         Map<String, Object> returnMsg = new HashMap<>();
         String userName = (String) parameter.get("userName");
         String loginUserPassword = (String) parameter.get("loginUserPassword");
-        List<SystemUser> systemUserList = systemUserDAO.selectByUserName(userName);
-        if (systemUserList.size() > 0) {
-            SystemUser systemUser = systemUserList.get(0);
+        SystemUser systemUser = systemUserDAO.selectByUserName(userName);
+        if (systemUser != null) {
             Map<String, Object> SQLParameter = new HashMap<>();
             SQLParameter.put("UID", systemUser.getUid());
             SQLParameter.put("loginUserPassword", loginUserPassword);

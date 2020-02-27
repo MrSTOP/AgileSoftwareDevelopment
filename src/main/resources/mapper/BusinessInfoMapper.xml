@@ -6,6 +6,10 @@
     <select id="selectByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.BusinessInfo">
         SELECT * FROM businessinfo WHERE business_id=#{businessId}
     </select>
+
+    <select id="selectAllBusiness" resultType="com.qianfeng.ykw.pojo.BusinessInfo">
+        SELECT * FROM businessinfo
+    </select>
 <!--    创建对应的基础信息-->
     <insert id="insertBlankBusinessInfo" parameterType="int">
         INSERT INTO businessinfo (business_id) VALUES (#{businessId})

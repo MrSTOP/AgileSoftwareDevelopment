@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -38,11 +39,12 @@ public class SystemUserAllInfoController {
     
     @RequestMapping("/updateSystemUserInfo")
     public String updateSystemUserInfo(SystemUserAllInfo systemUserAllInfo, HttpServletRequest request) {
-        if (systemUserService.updateSystemUserInfo(systemUserAllInfo, request)) {
-            request.setAttribute("msg", "修改成功");
-        } else {
-            request.setAttribute("msg", "修改失败");
-        }
+        String msg = systemUserService.updateSystemUserInfo(systemUserAllInfo, request);
+
+        request.setAttribute("msg", msg);
+
         return "/pages/systemuser/change_sysuser";
     }
+
+
 }

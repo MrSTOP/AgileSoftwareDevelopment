@@ -18,7 +18,7 @@ public interface ISystemUserDAO {
      * @param userName 用户登录名
      * @return 所有符合用户登录名SystemUser
      */
-    List<SystemUser> selectByUserName(String userName);
+    SystemUser selectByUserName(String userName);
     
     /**
      * 查询当前系统管理员

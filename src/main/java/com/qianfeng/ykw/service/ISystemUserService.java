@@ -4,6 +4,7 @@ import com.qianfeng.ykw.pojo.SystemUserAllInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -30,5 +31,5 @@ public interface ISystemUserService {
      * @param request
      * @return
      */
-    boolean updateSystemUserInfo(SystemUserAllInfo systemUserAllInfo, HttpServletRequest request);
+    String updateSystemUserInfo(SystemUserAllInfo systemUserAllInfo, HttpServletRequest request);
 }
