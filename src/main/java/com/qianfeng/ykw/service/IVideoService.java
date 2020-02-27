@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -28,11 +27,4 @@ public interface IVideoService {
      * @return
      */
     List<Video> selectVideoInfoByBusinessId(int businessId);
-
-    /**
-     * 按指定要求查询用户视频
-     * @param parameter
-     * @return
-     */
-    List<Video> selectVideoByDateAndName(Map<String, Object> parameter);
 }

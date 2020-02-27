@@ -1,6 +1,5 @@
 package com.qianfeng.ykw.service.impl;
 
-import com.qianfeng.ykw.dao.BusinessDAO;
 import com.qianfeng.ykw.dao.IVideoDAO;
 import com.qianfeng.ykw.pojo.Business;
 import com.qianfeng.ykw.pojo.Video;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -24,8 +22,6 @@ public class IVideoServiceImpl implements IVideoService {
     
     @Autowired
     IVideoDAO videoDAO;
-    @Autowired
-    BusinessDAO businessDAO;
     
     /**
      * 上传视频
@@ -68,27 +64,5 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<Video> selectVideoInfoByBusinessId(int businessId) {
         return videoDAO.selectVideoInfoByBusinessId(businessId);
-    }
-
-    @Override
-    public List<Video> selectVideoByDateAndName(Map<String, Object> parameter) {
-
-        String selectType = (String) parameter.get("selectType");
-
-        if(selectType == "0" || selectType == null){//没有条件
-            return videoDAO.selectVideo();
-        }else if(selectType == "1"){//通过名字查找
-            String businessUsername = (String) parameter.get("business_name");
-
-            return videoDAO.selectVideoInfoByBusinessId(businessDAO.selectByBusinessName(businessUsername).getBusinessId());
-        }else if(selectType == "2"){//通过时间查找
-            return videoDAO.selectVideoInfoByDate(parameter);
-        }else if(selectType == "3"){//通过时间名字同时查找
-            String businessUsername = (String) parameter.get("business_name");
-            int business_id = businessDAO.selectByBusinessName(businessUsername).getBusinessId();
-            parameter.put("business_id",business_id);
-            return videoDAO.selectVideoInfoByDateAndId(parameter);
-        }
-        return null;
     }
 }
