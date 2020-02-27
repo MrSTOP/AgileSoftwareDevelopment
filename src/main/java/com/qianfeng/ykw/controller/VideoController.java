@@ -10,7 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -51,5 +53,31 @@ public class VideoController {
         List<Video> videoList = videoService.selectVideoInfoByBusinessId(businessId);
         request.setAttribute("videoList", videoList);
         return "/pages/video/query_video";
+    }
+    @RequestMapping("/queryVideoByOther")
+    public String queryVideoByOther(HttpServletRequest request){
+        Map<String,Object> map = new HashMap<String, Object>();
+        String business_name = (String)request.getAttribute("business_name");
+        String startdate = (String)request.getAttribute("startdate");
+        String enddate = (String)request.getAttribute("enddate");
+        if(business_name == null){
+            if(startdate == null||enddate == null){
+                map.put("selectType","0");
+            }else{
+                map.put("selectType","2");
+            }
+        }else{
+            if(startdate == null||enddate == null){
+                map.put("selectType","1");
+            }else{
+                map.put("selectType","3");
+            }
+        }
+        map.put("business_name",business_name);
+        map.put("startdate",startdate);
+        map.put("enddate",enddate);
+        List<Video> videoList = videoService.selectVideoByDateAndName(map);
+        request.setAttribute("videoList",videoList);
+        return "../jsp/pages/video/select_video.jsp";
     }
 }
