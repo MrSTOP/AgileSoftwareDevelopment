@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -64,5 +65,10 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<Video> selectVideoInfoByBusinessId(int businessId) {
         return videoDAO.selectVideoInfoByBusinessId(businessId);
+    }
+    
+    @Override
+    public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
+        videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
     }
 }

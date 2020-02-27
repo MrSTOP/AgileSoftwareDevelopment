@@ -3,6 +3,7 @@ package com.qianfeng.ykw.dao;
 import com.qianfeng.ykw.pojo.Video;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -23,4 +24,11 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideoInfoByBusinessId(int businessId);
+    
+    
+    /**
+     * 将视频移到回收站
+     * @param param
+     */
+    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
 }

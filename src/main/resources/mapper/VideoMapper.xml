@@ -24,5 +24,7 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
         WHERE video.business_id = businessinfo.business_id AND video.business_id = #{business_id}
 AND video.video_date BETWEEN #{startdate} AND #{enddate};
     </select>
-
+    <select id="moveVideoToRecycleBinProcByIdAndType" parameterType="hashmap" statementType="CALLABLE">
+        {CALL moveVideoToRecycleBinProc(#{videoId}, #{businessId}, #{uid})}
+    </select>
 </mapper>
