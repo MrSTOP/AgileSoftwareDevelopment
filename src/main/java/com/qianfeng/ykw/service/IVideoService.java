@@ -28,6 +28,11 @@ public interface IVideoService {
      * @return
      */
     List<Video> selectVideoInfoByBusinessId(int businessId);
-    
-    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
+
+    /**
+     * 按指定要求查询用户视频
+     * @param parameter
+     * @return
+     */
+    List<Video> selectVideoByDateAndName(Map<String, Object> parameter);
 }
