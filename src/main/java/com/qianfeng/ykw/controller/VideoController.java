@@ -87,20 +87,5 @@ public class VideoController {
         return "pages/video/select_video";
     }
 
-    @RequestMapping("/deleteVideo")
-    public String deleteVideo(int videoId, HttpServletRequest request) {
-        Map<String, Object> param = new HashMap<>();
-        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
-        param.put("videoId", videoId);
-        if (userRoleType == UserRoleType.ROLE_BUSINESS) {
-            param.put("deleteType", DELETE_BY_ADMINISTRATOR);
-            param.put("uid", null);
-        } else if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
-            SystemUser systemUser = (SystemUser) request.getSession().getAttribute("sustemUser");
-            param.put("deleteType", DELETE_BY_BUSINESS);
-            param.put("uid", systemUser.getUid());
-        }
-        videoService.moveVideoToRecycleBinProcByIdAndType(param);
-        return "/VideoController/queryVideo";
-    }
+
 }
