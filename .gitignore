@@ -28,7 +28,7 @@ hs_err_pid*
 #git merge 备份文件
 *.orig
 #target文件夹
-/target/*
+/target/
 #忽略videos audios
 /src/main/webapp/audios/
 /src/main/webapp/videos/
