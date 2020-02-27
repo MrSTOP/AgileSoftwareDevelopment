@@ -73,17 +73,17 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<Video> selectVideoByDateAndName(Map<String, Object> parameter) {
 
-        int selectType = (int)parameter.get("selectType");
+        String selectType = (String) parameter.get("selectType");
 
-        if(selectType == 0){//没有条件
+        if(selectType == "0" || selectType == null){//没有条件
             return videoDAO.selectVideo();
-        }else if(selectType == 1){//通过名字查找
+        }else if(selectType == "1"){//通过名字查找
             String businessUsername = (String) parameter.get("business_name");
 
             return videoDAO.selectVideoInfoByBusinessId(businessDAO.selectByBusinessName(businessUsername).getBusinessId());
-        }else if(selectType == 2){//通过时间查找
+        }else if(selectType == "2"){//通过时间查找
             return videoDAO.selectVideoInfoByDate(parameter);
-        }else if(selectType == 3){//通过时间名字同时查找
+        }else if(selectType == "3"){//通过时间名字同时查找
             String businessUsername = (String) parameter.get("business_name");
             int business_id = businessDAO.selectByBusinessName(businessUsername).getBusinessId();
             parameter.put("business_id",business_id);

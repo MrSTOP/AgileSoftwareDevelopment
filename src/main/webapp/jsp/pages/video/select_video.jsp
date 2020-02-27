@@ -43,7 +43,7 @@
                             <label class="col-sm-2 control-label">用户名</label>
 
                             <div class="col-sm-10">
-                                <input type="text" id="business_name" class="form-control" name="business_name">
+                                <input type="text" id="selectbusiness_name" class="form-control" name="selectbusiness_name">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>

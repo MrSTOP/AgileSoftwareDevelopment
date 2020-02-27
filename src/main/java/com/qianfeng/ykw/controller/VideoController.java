@@ -55,29 +55,30 @@ public class VideoController {
         return "/pages/video/query_video";
     }
     @RequestMapping("/queryVideoByOther")
-    public String queryVideoByOther(HttpServletRequest request){
+    public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
         Map<String,Object> map = new HashMap<String, Object>();
-        String business_name = (String)request.getAttribute("business_name");
-        String startdate = (String)request.getAttribute("startdate");
-        String enddate = (String)request.getAttribute("enddate");
-        if(business_name == null){
-            if(startdate == null||enddate == null){
+//        String business_name = (String)request.getAttribute("selectbusiness_name");
+//        String startdate = (String)request.getAttribute("startdate");
+//        String enddate = (String)request.getAttribute("enddate");
+        System.out.println(startdate+"------"+enddate+"-----"+selectbusiness_name);
+        if(selectbusiness_name == null ||selectbusiness_name.isEmpty()){
+            if(startdate == null||enddate == null ||startdate.isEmpty()||enddate.isEmpty()){
                 map.put("selectType","0");
             }else{
                 map.put("selectType","2");
             }
         }else{
-            if(startdate == null||enddate == null){
+            if(startdate == null||enddate == null||startdate.isEmpty()||enddate.isEmpty()){
                 map.put("selectType","1");
             }else{
                 map.put("selectType","3");
             }
         }
-        map.put("business_name",business_name);
+        map.put("business_name",selectbusiness_name);
         map.put("startdate",startdate);
         map.put("enddate",enddate);
         List<Video> videoList = videoService.selectVideoByDateAndName(map);
         request.setAttribute("videoList",videoList);
-        return "../jsp/pages/video/select_video.jsp";
+        return "pages/video/select_video";
     }
 }

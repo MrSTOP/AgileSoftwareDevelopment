@@ -25,4 +25,7 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
 AND video.video_date BETWEEN #{startdate} AND #{enddate};
     </select>
 
+    <select id="selectVideo"  resultType="com.qianfeng.ykw.pojo.Video">
+            SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo where video.business_id = businessinfo.business_id;
+    </select>
 </mapper>
