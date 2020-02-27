@@ -92,4 +92,9 @@ public class IVideoServiceImpl implements IVideoService {
         }
         return null;
     }
+    
+    @Override
+    public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
+        videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
+    }
 }

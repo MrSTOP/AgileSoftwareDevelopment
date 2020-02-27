@@ -44,4 +44,9 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideo();
+    /**
+     * 将视频移到回收站
+     * @param param
+     */
+    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
 }

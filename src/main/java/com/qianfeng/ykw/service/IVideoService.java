@@ -35,4 +35,6 @@ public interface IVideoService {
      * @return
      */
     List<Video> selectVideoByDateAndName(Map<String, Object> parameter);
+    
+    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
 }

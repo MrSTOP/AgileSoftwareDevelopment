@@ -59,6 +59,24 @@ public class VideoController {
         request.setAttribute("videoList", videoList);
         return "/pages/video/query_video";
     }
+    
+     @RequestMapping("/deleteVideo")
+    public String deleteVideo(int videoId, HttpServletRequest request) {
+        Map<String, Object> param = new HashMap<>();
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        param.put("videoId", videoId);
+        if (userRoleType == UserRoleType.ROLE_BUSINESS) {
+            param.put("deleteType", DELETE_BY_ADMINISTRATOR);
+            param.put("uid", null);
+        } else if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
+            SystemUser systemUser = (SystemUser) request.getSession().getAttribute("sustemUser");
+            param.put("deleteType", DELETE_BY_BUSINESS);
+            param.put("uid", systemUser.getUid());
+        }
+        videoService.moveVideoToRecycleBinProcByIdAndType(param);
+        return "redirect:/VideoController/queryVideo";
+    }
+
     @RequestMapping("/queryVideoByOther")
     public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
         Map<String,Object> map = new HashMap<String, Object>();
@@ -86,6 +104,5 @@ public class VideoController {
         request.setAttribute("videoList",videoList);
         return "pages/video/select_video";
     }
-
 
 }
