@@ -11,11 +11,24 @@
  Target Server Version : 50541
  File Encoding         : 65001
 
- Date: 27/02/2020 13:04:59
+ Date: 27/02/2020 15:23:09
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for audio
+-- ----------------------------
+DROP TABLE IF EXISTS `audio`;
+CREATE TABLE `audio`  (
+  `audio_id` int(9) NOT NULL AUTO_INCREMENT,
+  `audio_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `audio_src` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `audio_date` datetime NULL DEFAULT NULL,
+  `business_id` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`audio_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for business
@@ -70,6 +83,38 @@ CREATE TABLE `businesspassword`  (
 INSERT INTO `businesspassword` VALUES (1, '123', 1);
 INSERT INTO `businesspassword` VALUES (2, '123', 6);
 INSERT INTO `businesspassword` VALUES (3, '123456', 7);
+
+-- ----------------------------
+-- Table structure for deleteaudio
+-- ----------------------------
+DROP TABLE IF EXISTS `deleteaudio`;
+CREATE TABLE `deleteaudio`  (
+  `audio_id` int(9) NOT NULL AUTO_INCREMENT,
+  `audio_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `audio_src` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `audio_date` datetime NULL DEFAULT NULL,
+  `business_id` int(9) NULL DEFAULT NULL,
+  `delete_audio_date` datetime NULL DEFAULT NULL,
+  `delete_type` int(2) NULL DEFAULT NULL,
+  `uid` int(9) NULL DEFAULT NULL,
+  PRIMARY KEY (`audio_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for deletevideo
+-- ----------------------------
+DROP TABLE IF EXISTS `deletevideo`;
+CREATE TABLE `deletevideo`  (
+  `video_id` int(9) NOT NULL,
+  `video_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `video_src` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `video_date` datetime NULL DEFAULT NULL,
+  `business_id` int(9) NULL DEFAULT NULL,
+  `delete_video_date` datetime NULL DEFAULT NULL,
+  `delete_type` int(2) NULL DEFAULT NULL,
+  `uid` int(9) NULL DEFAULT NULL,
+  PRIMARY KEY (`video_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for loginpassword
