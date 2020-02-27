@@ -1,5 +1,9 @@
 package com.qianfeng.ykw.dao;
 
+import com.qianfeng.ykw.pojo.BusinessInfo;
+
+import java.util.List;
+
 /**
  * @author 闫坤炜
  * @version 1.0
@@ -12,4 +16,10 @@ public interface BusinessInfoDAO {
      * @return
      */
     int insertBlankBusinessInfo(int businessId);
+
+    /**
+     * 查询得到所有数据库中商户
+     * @return
+     */
+    List<BusinessInfo> selectAllBusiness();
 }

@@ -85,7 +85,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li class="administratorFunc">
-                            <a class="J_menuItem" href="graph_flot.html">商户列表</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessInfoController/selectAllBusinessInfo">商户列表</a>
                         </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="graph_morris.html">编辑商户信息</a>
