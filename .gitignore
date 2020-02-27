@@ -28,9 +28,9 @@ hs_err_pid*
 #git merge 备份文件
 *.orig
 #target文件夹
-/target/*
-#不忽略videos audios
-!/target/ssm_proj_without_video/
-/target/ssm_proj_without_video/*
-!/target/ssm_proj_without_video/videos/
-!/target/ssm_proj_without_video/audios/
+/target/
+#忽略videos audios
+/src/main/webapp/audios/
+/src/main/webapp/videos/
+#忽略JDBC配置文件，避免密码冲突
+/src/main/resources/jdbc.properties

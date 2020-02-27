@@ -12,4 +12,17 @@
         WHERE video.business_id = businessinfo.business_id
         AND video.business_id=#{businessId}
     </select>
+
+    <select id="selectVideoInfoByDate" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Video">
+            SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo
+        WHERE video.business_id = businessinfo.business_id
+AND video.video_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
+    <select id="selectVideoInfoByDateAndId" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Video">
+            SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo
+        WHERE video.business_id = businessinfo.business_id AND video.business_id = #{business_id}
+AND video.video_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
 </mapper>
