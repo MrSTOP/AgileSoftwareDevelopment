@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author 闫坤炜
@@ -46,9 +47,10 @@ public class IVideoServiceImpl implements IVideoService {
     public boolean upload(Video video, MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         int businessId = ((Business)request.getSession().getAttribute("business")).getBusinessId();
         //准备文件在服务器上保存的位置
+        String uuid = UUID.randomUUID().toString();
         String rootPath = request.getServletContext().getRealPath("");
-        String filePath = rootPath + "/videos/" + multipartFile.getOriginalFilename();
-        System.out.println(filePath);
+        String fileSrc = "videos/" + uuid + "-" +multipartFile.getOriginalFilename();
+        String filePath = rootPath + fileSrc;
         File videoFile = new File(filePath);
         //判断文件夹是否存在，不存在则创建
         File videoFileParentFile = videoFile.getParentFile();
@@ -67,7 +69,7 @@ public class IVideoServiceImpl implements IVideoService {
         multipartFile.transferTo(videoFile);
         //接收数据
         video.setBusinessId(businessId);
-        video.setVideoSrc("/videos/" + multipartFile.getOriginalFilename());
+        video.setVideoSrc(fileSrc);
         //数据保存
         return videoDAO.insertNewVideo(video) > 0;
     }

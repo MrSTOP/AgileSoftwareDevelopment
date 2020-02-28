@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class IAudioServiceImpl implements IAudioService {
@@ -40,9 +41,10 @@ public class IAudioServiceImpl implements IAudioService {
     public boolean upload(Audio audio, MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         int businessId = ((Business)request.getSession().getAttribute("business")).getBusinessId();
         //准备文件在服务器上保存的位置
+        String uuid = UUID.randomUUID().toString();
         String rootPath = request.getServletContext().getRealPath("");
-        String filePath = rootPath + "/audios/" + multipartFile.getOriginalFilename();
-        System.out.println(filePath);
+        String fileSrc = "videos/" + uuid + "-" +multipartFile.getOriginalFilename();
+        String filePath = rootPath + fileSrc;
         File audioFile = new File(filePath);
         //判断文件夹是否存在，不存在则创建
         File audioFileParentFile = audioFile.getParentFile();
@@ -61,7 +63,7 @@ public class IAudioServiceImpl implements IAudioService {
         multipartFile.transferTo(audioFile);
         //接收数据
         audio.setBusinessId(businessId);
-        audio.setAudioSrc("/audios/" + multipartFile.getOriginalFilename());
+        audio.setAudioSrc(fileSrc);
         //数据保存
         return audioDAO.insertNewAudio(audio) > 0;
     }
