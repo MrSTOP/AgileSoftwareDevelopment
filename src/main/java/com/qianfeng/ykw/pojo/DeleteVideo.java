@@ -2,6 +2,9 @@ package com.qianfeng.ykw.pojo;
 
 
 public class DeleteVideo {
+  
+  public static final int DELETE_BY_ADMINISTRATOR = 0;
+  public static final int DELETE_BY_BUSINESS = 1;
 
   private int videoId;
   private String videoTitle;
@@ -12,6 +15,7 @@ public class DeleteVideo {
   private int deleteType;
   private int uid;
   private String businessInfoLegalPerson;
+  private boolean isRecoverable;
 
 
   public int getVideoId() {
@@ -68,7 +72,7 @@ public class DeleteVideo {
   }
 
 
-  public long getDeleteType() {
+  public int getDeleteType() {
     return deleteType;
   }
 
@@ -91,5 +95,13 @@ public class DeleteVideo {
   
   public void setBusinessInfoLegalPerson(String businessInfoLegalPerson) {
     this.businessInfoLegalPerson = businessInfoLegalPerson;
+  }
+  
+  public boolean isRecoverable() {
+    return isRecoverable;
+  }
+  
+  public void setRecoverable(boolean recoverable) {
+    isRecoverable = recoverable;
   }
 }

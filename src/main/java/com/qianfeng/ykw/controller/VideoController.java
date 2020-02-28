@@ -24,8 +24,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/VideoController")
 public class VideoController {
-    public static final int DELETE_BY_ADMINISTRATOR = 0;
-    public static final int DELETE_BY_BUSINESS = 1;
 
 
     @Autowired
@@ -67,11 +65,11 @@ public class VideoController {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
         param.put("videoId", videoId);
         if (userRoleType == UserRoleType.ROLE_BUSINESS) {
-            param.put("deleteType", DELETE_BY_ADMINISTRATOR);
+            param.put("deleteType", DeleteVideo.DELETE_BY_BUSINESS);
             param.put("uid", null);
         } else if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
-            SystemUser systemUser = (SystemUser) request.getSession().getAttribute("sustemUser");
-            param.put("deleteType", DELETE_BY_BUSINESS);
+            SystemUser systemUser = (SystemUser) request.getSession().getAttribute("systemUser");
+            param.put("deleteType", DeleteVideo.DELETE_BY_ADMINISTRATOR);
             param.put("uid", systemUser.getUid());
         }
         videoService.moveVideoToRecycleBinProcByIdAndType(param);
@@ -80,7 +78,7 @@ public class VideoController {
     
     @RequestMapping("/queryAllRecycleBinVideo")
     public String queryAllRecycleBinVideo(HttpServletRequest request) {
-        List<DeleteVideo> recycleBinVideoList = videoService.selectAllRecycleBinVideo();
+        List<DeleteVideo> recycleBinVideoList = videoService.selectAllRecycleBinVideo(request);
         request.setAttribute("recycleBinVideoList", recycleBinVideoList);
         return "/pages/video/video_recycle_bin";
     }

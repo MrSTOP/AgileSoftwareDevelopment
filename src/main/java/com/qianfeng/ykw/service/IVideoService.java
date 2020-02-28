@@ -39,5 +39,5 @@ public interface IVideoService {
     
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
     
-    List<DeleteVideo> selectAllRecycleBinVideo();
+    List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request);
 }

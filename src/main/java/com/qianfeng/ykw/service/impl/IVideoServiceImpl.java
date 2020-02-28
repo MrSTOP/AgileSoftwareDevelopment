@@ -1,5 +1,6 @@
 package com.qianfeng.ykw.service.impl;
 
+import com.qianfeng.ykw.UserRoleType;
 import com.qianfeng.ykw.dao.BusinessDAO;
 import com.qianfeng.ykw.dao.IVideoDAO;
 import com.qianfeng.ykw.pojo.Business;
@@ -100,7 +101,24 @@ public class IVideoServiceImpl implements IVideoService {
     }
     
     @Override
-    public List<DeleteVideo> selectAllRecycleBinVideo() {
-        return videoDAO.selectAllRecycleBinVideo();
+    public List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        List<DeleteVideo> deleteVideoList = videoDAO.selectAllRecycleBinVideo();
+        for (DeleteVideo deleteVideo: deleteVideoList) {
+            if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
+                deleteVideo.setRecoverable(true);
+            } else if (userRoleType == UserRoleType.ROLE_BUSINESS) {
+                switch (deleteVideo.getDeleteType()) {
+                    case DeleteVideo.DELETE_BY_BUSINESS:
+                        deleteVideo.setRecoverable(true);
+                        break;
+                    case DeleteVideo.DELETE_BY_ADMINISTRATOR:
+                    default:
+                        deleteVideo.setRecoverable(false);
+                    break;
+                }
+            }
+        }
+        return deleteVideoList;
     }
 }

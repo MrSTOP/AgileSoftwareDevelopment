@@ -66,7 +66,7 @@
                                     <td class="center">${video.videoDate.toLocaleString()}</td>
                                     <td class="center">${video.businessInfoLegalPerson}</td>
                                     <td class="center">${video.deleteVideoDate.toLocaleString()}</td>
-                                    <td class="center"><button type="button" class="btn btn-primary">还原</button></td>
+                                    <td class="center"><button type="button" class="btn btn-primary" ${video.recoverable ? "" : "disabled='disabled'"}>还原</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
