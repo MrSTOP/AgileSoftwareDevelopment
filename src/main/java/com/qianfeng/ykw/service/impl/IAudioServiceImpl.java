@@ -43,7 +43,7 @@ public class IAudioServiceImpl implements IAudioService {
         //准备文件在服务器上保存的位置
         String uuid = UUID.randomUUID().toString();
         String rootPath = request.getServletContext().getRealPath("");
-        String fileSrc = "videos/" + uuid + "-" +multipartFile.getOriginalFilename();
+        String fileSrc = "audios/" + uuid + "-" +multipartFile.getOriginalFilename();
         String filePath = rootPath + fileSrc;
         File audioFile = new File(filePath);
         //判断文件夹是否存在，不存在则创建

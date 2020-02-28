@@ -148,7 +148,7 @@
             }})
     });
     function changeVideo(src) {
-        $("#videoPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);
+        $("#videoPlaySrc").attr("src", "${pageContext.request.contextPath}/" + src);
     }
 </script>
 

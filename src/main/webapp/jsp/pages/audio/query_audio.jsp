@@ -147,7 +147,7 @@
             }})
     });
     function changeAudio(src) {
-        $("#audioPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);
+        $("#audioPlaySrc").attr("src", "${pageContext.request.contextPath}/" + src);
     }
 </script>
 
