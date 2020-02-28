@@ -26,7 +26,7 @@
     <link href="${pageContext.request.contextPath}/css/animate.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style.css?v=4.1.0" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/plugins/footable/footable.core.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/js/jquery.min.js?v=2.1.4"></script>
+
 </head>
 
 <body class="gray-bg">
@@ -47,36 +47,27 @@
                     <!--数据表顶部查询 结束-->
                     <!--数据表开始-->
                     <div class="jqGrid_wrapper">
-                        <table class="footable table table-stripped table-hover" data-page-size="8" data-filter=#filter>
+                        <table id="Tablebusiness" class="footable table table-stripped table-hover" data-page-size="8" data-filter=#filter>
                             <!--数据头 开始-->
                             <thead>
                             <tr>
                                 <th>商户ID</th>
-                                <th>商户名称</th>
-                                <th>法人名称</th>
-                                <th>法务电话</th>
+                                <th>商户登录名</th>
+                                <th>商户冻结状态</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
                             <!--数据体 开始-->
                             <tbody>
-                            <c:forEach var="businessInfo" items="${requestScope.businessInfoList}">
-                                <tr class="gradeX" >
-                                    <td class="businessId">${businessInfo.businessId}</td>
-                                    <td class="Name">${businessInfo.businessInfoName}</td>
-                                    <td class="LegalPerson">${businessInfo.businessInfoLegalPerson}</td>
-                                    <td class="Tel">${businessInfo.businessInfoLegalPersonTel}</td>
-
+                            <c:forEach var="business" items="${requestScope.businessList}">
+                                <tr class="gradeX" id= "business${business.businessId}">
+                                    <td>${business.businessId}</td>
+                                    <td>${business.businessUsername}</td>
                                     <td>
-                                        <button class="btn btn-primary" type="button" name = "goVideo" >查看该用户上传视频</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-white" type="button" name = "goAudio"> 查看该用户上传音频</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary" type="button" name = "banBusiness" ${businessInfo.businessIsfreeze?"disabled='disabled'":""}> 冻结账号
-                                        <span class="otherbusinessId" style="display: none">${businessInfo.businessId}</span>
+                                        <button class="btn btn-white" type="button" name = "resetBusiness"> 解冻账号
+                                            <span class="BId" style="display: none">${business.businessId}</span>
                                         </button>
+
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -102,7 +93,7 @@
 </div>
 
 <!-- 全局js -->
-
+<script src="${pageContext.request.contextPath}/js/jquery.min.js?v=2.1.4"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="${pageContext.request.contextPath}/js/plugins/footable/footable.all.min.js"></script>
 
@@ -118,16 +109,22 @@
 
 <!-- 自定义js -->
 <script src="${pageContext.request.contextPath}/js/content.js?v=1.0.0"></script>
+<script>
+    $(document).ready(function () {
+        $('.footable').footable();
+        $('.footable2').footable();
+    });
+
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $('[name = "banBusiness"]').click(function () {
+        $('[name = "resetBusiness"]').click(function () {
             console.log("nihao");
-            var btn = $(this);
-            var businessId = $(this).find(".otherbusinessId").html();
-            var businessIsfreeze = true;
-            console.log($(this).html());
-
+            var tr = $(this).parent().parent();
+            var businessId = $(this).find(".BId").html();
+            var businessIsfreeze = false;
+            var nowTr = "business" + businessId;
             console.log(businessId);
             console.log(businessIsfreeze);
 
@@ -139,35 +136,16 @@
                     console.log(msg.result);
                     if (msg.result == true) {
                         console.log("ban");
-
-                        btn.attr("disabled","disabled");
+                        $("#Tablebusiness tr").remove("#"+nowTr);
                     }
                     alert(msg.msg);
                 }
             });
         });
-
-        $('[name = "goVideo"]').click()(function () {
-            var businessId = $(this).find(".otherbusinessId").html();
-            window.location.href = "${pageContext.request.contextPath}/VideoController/queryAudioById?business="+businessId;
-        })
-
-        $('[name = "goAudio"]').click()(function () {
-            var businessId = $(this).find(".otherbusinessId").html();
-            window.location.href = "${pageContext.request.contextPath}/VideoController/queryVideoById?business="+businessId;
-        })
     });
 
 
 </script>
-<script>
-    $(document).ready(function () {
-        $('.footable').footable();
-        $('.footable2').footable();
-    });
-
-</script>
-
 </body>
 
 </html>

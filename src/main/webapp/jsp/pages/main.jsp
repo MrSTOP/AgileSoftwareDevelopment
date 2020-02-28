@@ -87,8 +87,11 @@
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessInfoController/selectAllBusinessInfo">商户列表</a>
                         </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessController/selectBusinessIsfreeze">已冻结商户</a>
+                        </li>
                         <li class="businessFunc">
-                            <a class="J_menuItem" href="graph_morris.html">编辑商户信息</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp//pages/business/change_business.jsp">编辑商户信息</a>
                         </li>
                     </ul>
                 </li>

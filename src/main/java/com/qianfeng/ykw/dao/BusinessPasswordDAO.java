@@ -21,4 +21,11 @@ public interface BusinessPasswordDAO {
      * @return
      */
     int insertNewPassword(BusinessPassword businessPassword);
+
+    /**
+     * 更新商户密码
+     * @param businessPassword
+     * @return
+     */
+    int updateBusinessPasswordByID(BusinessPassword businessPassword);
 }
