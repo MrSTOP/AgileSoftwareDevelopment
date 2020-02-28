@@ -38,7 +38,7 @@
                     <h5>音频查询</h5>
                 </div>
                 <div class="ibox-content">
-                    <form method="post" action="${pageContext.request.contextPath}/VideoController/queryVideoByOther" class="form-horizontal">
+                    <form method="post" action="${pageContext.request.contextPath}/AudioController/queryAudioByOther" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户名</label>
 
@@ -90,13 +90,13 @@
                             <!--数据头 结束-->
                             <!--数据体 开始-->
                             <tbody>
-                            <c:forEach var="video" items="${requestScope.videoList}">
+                            <c:forEach var="audio" items="${requestScope.audioList}">
                                 <tr class="gradeX">
-                                    <td>${video.businessId}</td>
-                                    <td>${video.videoTitle}</td>
-                                    <td>${video.businessInfoLegalPerson}</td>
-                                    <td class="center">${video.videoDate.toLocaleString()}</td>
-                                    <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoPlay" onclick="changeVideo('${video.videoSrc}')">播放</button></td>
+                                    <td>${audio.businessId}</td>
+                                    <td>${audio.audioTitle}</td>
+                                    <td>${audio.businessInfoLegalPerson}</td>
+                                    <td class="center">${audio.audioDate.toLocaleString()}</td>
+                                    <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoPlay" onclick="changeVideo('${audio.audioSrc}')">播放</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
