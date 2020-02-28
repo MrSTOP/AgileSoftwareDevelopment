@@ -48,25 +48,27 @@
                             <thead>
                             <tr>
                                 <th>序号</th>
-                                <th>音频标题</th>
-                                <th>上传者</th>
+                                <th>视频标题</th>
                                 <th>上传时间</th>
-                                <th>播放</th>
-                                <th>删除</th>
+                                <th>上传者</th>
+                                <th>删除时间</th>
+                                <th>还原</th>
+                                <th>彻底删除</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
                             <!--数据体 开始-->
                             <tbody>
-                            <c:forEach var="audio" items="${requestScope.audioList}">
+
+                            <c:forEach var="audio" items="${requestScope.recycleBinAudioList}">
                                 <tr class="gradeX">
                                     <td class="audioId">${audio.audioId}</td>
                                     <td>${audio.audioTitle}</td>
-                                    <td>${audio.businessInfoLegalPerson}</td>
                                     <td class="center">${audio.audioDate.toLocaleString()}</td>
-                                    <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#audioPlay" onclick="changeAudio('${audio.audioSrc}')">播放</button></td>
-                                    <td class="center"><button type="button" class="btn btn-danger recoverAudio">删除</button></td>
-                                    <td class="center"><button type="button" class="btn btn-danger deleteAudioPermanently">删除</button></td>
+                                    <td class="center">${audio.businessInfoLegalPerson}</td>
+                                    <td class="center">${audio.deleteAudioDate.toLocaleString()}</td>
+                                    <td class="center"><button type="button" class="btn btn-primary recoverAudio" ${audio.recoverable ? "" : "disabled='disabled'"}>还原</button></td>
+                                    <td class="center"><button type="button" class="btn btn-danger deleteAudioPermanently">彻底删除</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -133,7 +135,7 @@
                 var trElement = $(this).parent().parent();
                 var audioId = $(trElement).children(".audioId").html();
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/VideoController/recoverAudio",
+                    url: "${pageContext.request.contextPath}/AudioController/recoverAudio",
                     type: "POST",
                     data: "audioId=" + audioId,
                     success: function (msg) {
@@ -150,7 +152,7 @@
                 var trElement = $(this).parent().parent();
                 var audioId = $(trElement).children(".audioId").html();
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/VideoController/deleteAudioPermanently",
+                    url: "${pageContext.request.contextPath}/AudioController/deleteAudioPermanently",
                     type: "POST",
                     data: "audioId=" + audioId,
                     success: function (msg) {

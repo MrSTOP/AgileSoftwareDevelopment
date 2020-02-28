@@ -52,6 +52,7 @@
                                 <th>上传者</th>
                                 <th>上传时间</th>
                                 <th>播放</th>
+                                <th>删除</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
@@ -59,11 +60,12 @@
                             <tbody>
                             <c:forEach var="audio" items="${requestScope.audioList}">
                                 <tr class="gradeX">
-                                    <td>${audio.audioId}</td>
+                                    <td class="audioId">${audio.audioId}</td>
                                     <td>${audio.audioTitle}</td>
                                     <td>${audio.businessInfoLegalPerson}</td>
                                     <td class="center">${audio.audioDate.toLocaleString()}</td>
                                     <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#audioPlay" onclick="changeAudio('${audio.audioSrc}')">播放</button></td>
+                                    <td class="center"><button type="button" class="btn btn-danger deleteAudio">删除</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -123,8 +125,26 @@
 <script src="${pageContext.request.contextPath}/js/content.js?v=1.0.0"></script>
 <script>
     $(document).ready(function () {
-        $('.footable').footable();
-        $('.footable2').footable();
+        // $('.footable').footable();
+        // $('.footable2').footable();
+        $(".deleteAudio").on({"click": function () {
+                var trElement = $(this).parent().parent();
+                var audioId = $(trElement).children(".audioId").html();
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/AudioController/deleteAudio",
+                    type: "POST",
+                    data: "audioId=" + audioId,
+                    success: function (msg) {
+                        if (msg.result == true) {
+                            alert("删除成功");
+                            trElement.remove();
+                        } else {
+                            alert("删除失败");
+                        }
+                    }
+                });
+            }})
     });
     function changeAudio(src) {
         $("#audioPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);

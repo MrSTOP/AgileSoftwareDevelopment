@@ -102,7 +102,7 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level">
-                        <li class="businessFunc">
+                        <li class="administratorFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryVideo">视频列表</a>
                         </li>
                         <li class="administratorFunc">
@@ -111,7 +111,7 @@
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/video/add_video.jsp">上传视频</a>
                         </li>
-                        <li class="administratorFunc">
+                        <li class="businessFunc">
                         <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryAllVideo">商户视频</a>
                         </li>
                         <li class="">
@@ -137,6 +137,9 @@
                         </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAudio">商户音频</a>
+                        </li>
+                        <li class="">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryRecycleBinAudio">回收站</a>
                         </li>
                     </ul>
                 </li>
