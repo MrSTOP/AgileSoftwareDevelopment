@@ -81,18 +81,22 @@
                         if (msg.resultType == 1) {
                             $("#msg").html(msg.msg);
                         } else {
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/BusinessLoginController/register",
-                                type: "post",
-                                data: "businessUsername=" + businessUsername + "&businessPassword=" + businessPassword,
-                                success: function (resMsg) {
-                                    if (resMsg.result == true) {
-                                        window.location.href = "${pageContext.request.contextPath}/jsp/pages/main.jsp";
-                                    } else {
-                                        $("#msg").html(resMsg.msg);
+                            if( confirm(msg.msg))
+                            {
+                                $.ajax({
+                                    url: "${pageContext.request.contextPath}/BusinessLoginController/register",
+                                    type: "post",
+                                    data: "businessUsername=" + businessUsername + "&businessPassword=" + businessPassword,
+                                    success: function (resMsg) {
+                                        if (resMsg.result == true) {
+                                            window.location.href = "${pageContext.request.contextPath}/jsp/pages/main.jsp";
+                                        } else {
+                                            $("#msg").html(resMsg.msg);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+
                         }
                     }
                 }

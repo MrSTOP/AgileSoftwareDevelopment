@@ -19,6 +19,20 @@
     <select id="selectAllAudio" resultType="com.qianfeng.ykw.pojo.Audio">
         SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
         WHERE audio.business_id = businessinfo.business_id
+    <select id="selectAudioInfoByDate" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
+        WHERE audio.business_id = businessinfo.business_id
+AND audio.audio_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
+    <select id="selectAudioInfoByDateAndId" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
+        WHERE audio.business_id = businessinfo.business_id AND audio.business_id = #{business_id}
+AND audio.audio_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
+    <select id="selectAudio"  resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo where audio.business_id = businessinfo.business_id;
     </select>
 
 </mapper>

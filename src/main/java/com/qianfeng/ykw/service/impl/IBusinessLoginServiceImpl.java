@@ -46,24 +46,32 @@ public class IBusinessLoginServiceImpl implements IBusinessLoginService {
         //检测用户名是否存在
         Business business = businessDAO.selectByBusinessName(businessUsername);
         if (business != null) {//用户名存在
-            //检测用户密码是否存在
-            BusinessPassword password = new BusinessPassword();
-            password.setBusinessId(business.getBusinessId());
-            password.setBusinessPassword(businessPassword);
-            BusinessPassword passwordResult = businessPasswordDAO.selectByPasswordAndId(password);
-            if (passwordResult != null) {
-                //登录成功
-                resultMap.put("result", true);
-                HttpSession session = request.getSession();
-                //在session中存放用户角色(商户)
-                session.setAttribute("UserRoleType", UserRoleType.ROLE_BUSINESS);
-                //保存用户登录信息(businessId, businessUsername)
-                session.setAttribute("business", business);
-            } else {
+            if(!business.isBusinessIsfreeze())
+            {
+                //检测用户密码是否存在
+                BusinessPassword password = new BusinessPassword();
+                password.setBusinessId(business.getBusinessId());
+                password.setBusinessPassword(businessPassword);
+                BusinessPassword passwordResult = businessPasswordDAO.selectByPasswordAndId(password);
+                if (passwordResult != null) {
+                    //登录成功
+                    resultMap.put("result", true);
+                    HttpSession session = request.getSession();
+                    //在session中存放用户角色(商户)
+                    session.setAttribute("UserRoleType", UserRoleType.ROLE_BUSINESS);
+                    //保存用户登录信息(businessId, businessUsername)
+                    session.setAttribute("business", business);
+                } else {
+                    resultMap.put("result", false);
+                    resultMap.put("msg", "请检查您的密码");
+                    resultMap.put("resultType", 1);
+                }
+            }else{
                 resultMap.put("result", false);
-                resultMap.put("msg", "请检查您的密码");
+                resultMap.put("msg", "账户已被冻结，请联系管理员");
                 resultMap.put("resultType", 1);
             }
+
         } else {
             //用户名不存在
             resultMap.put("result", false);

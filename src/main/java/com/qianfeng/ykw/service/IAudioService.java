@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface IAudioService {
     /**
@@ -28,4 +29,12 @@ public interface IAudioService {
      * @return
      */
     List<Audio> selectAllAudio();
+
+    /**
+     * 按指定要求查询用户视频
+     * @param parameter
+     * @return
+     */
+    List<Audio> selectVideoByDateAndName(Map<String, Object> parameter);
+
 }

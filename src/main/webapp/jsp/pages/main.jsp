@@ -87,8 +87,11 @@
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="graph_flot.html">商户列表</a>
                         </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessController/selectBusinessIsfreeze">已冻结商户</a>
+                        </li>
                         <li class="businessFunc">
-                            <a class="J_menuItem" href="graph_morris.html">编辑商户信息</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp//pages/business/change_business.jsp">编辑商户信息</a>
                         </li>
                     </ul>
                 </li>
@@ -102,11 +105,17 @@
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryVideo">视频列表</a>
                         </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryVideoByOther">视频查询</a>
+                        </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/video/add_video.jsp">上传视频</a>
                         </li>
                         <li class="administratorFunc">
-                            <a class="J_menuItem" href="">商户视频</a>
+                        <a class="J_menuItem" href="">商户视频</a>
+                        </li>
+                        <li class="">
+                        <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryAllRecycleBinVideo">回收站</a>
                         </li>
                     </ul>
                 </li>
@@ -119,6 +128,9 @@
                     <ul class="nav nav-second-level">
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="graph_peity.html">音频列表</a>
+                        </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAudioByOther">音频查询</a>
                         </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="graph_sparkline.html">上传音频</a>

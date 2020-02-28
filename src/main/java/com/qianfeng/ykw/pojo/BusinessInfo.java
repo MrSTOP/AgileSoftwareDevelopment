@@ -2,8 +2,8 @@ package com.qianfeng.ykw.pojo;
 
 /**
  *
- * @author 闫坤炜
- * @version 1.0
+ * @author 闫坤炜 严子超
+ * @version 1.1
  */
 public class BusinessInfo {
 
@@ -11,6 +11,9 @@ public class BusinessInfo {
   private String businessInfoName;
   private String businessInfoLegalPerson;
   private String businessInfoLegalPersonTel;
+  private boolean businessIsfreeze;
+  private String businessPassword;
+  private String businessUsername;
   private int businessId;
 
 
@@ -58,4 +61,27 @@ public class BusinessInfo {
     this.businessId = businessId;
   }
 
+  public boolean isBusinessIsfreeze() {
+    return businessIsfreeze;
+  }
+
+  public void setBusinessIsfreeze(boolean businessIsfreeze) {
+    this.businessIsfreeze = businessIsfreeze;
+  }
+
+  public String getBusinessPassword() {
+    return businessPassword;
+  }
+
+  public void setBusinessPassword(String businessPassword) {
+    this.businessPassword = businessPassword;
+  }
+
+  public String getBusinessUsername() {
+    return businessUsername;
+  }
+
+  public void setBusinessUsername(String businessUsername) {
+    this.businessUsername = businessUsername;
+  }
 }
