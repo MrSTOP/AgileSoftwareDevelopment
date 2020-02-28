@@ -66,12 +66,17 @@
                                     <td class="Name">${businessInfo.businessInfoName}</td>
                                     <td class="LegalPerson">${businessInfo.businessInfoLegalPerson}</td>
                                     <td class="Tel">${businessInfo.businessInfoLegalPersonTel}</td>
-
                                     <td>
-                                        <button class="btn btn-primary" type="button" name = "goVideo" >查看该用户上传视频</button>
+                                        <button class="btn btn-primary" type="button" name = "goVideo" >查看该用户上传视频
+                                            <span class="businessId1" style="display: none">${businessInfo.businessId}</span>
+                                        </button>
+
                                     </td>
                                     <td>
-                                        <button class="btn btn-white" type="button" name = "goAudio"> 查看该用户上传音频</button>
+                                        <button class="btn btn-white" type="button" name = "goAudio"> 查看该用户上传音频
+                                            <span class="businessId2" style="display: none">${businessInfo.businessId}</span>
+                                        </button>
+
                                     </td>
                                     <td>
                                         <button class="btn btn-primary" type="button" name = "banBusiness" ${businessInfo.businessIsfreeze?"disabled='disabled'":""}> 冻结账号
@@ -148,12 +153,15 @@
         });
 
         $('[name = "goVideo"]').click(function () {
-            var businessId = $(this).find(".otherbusinessId").html();
+            console.log($(this).html());
+            var businessId = $(this).find(".businessId1").html();
+            console.log(businessId);
             window.location.href = "${pageContext.request.contextPath}/VideoController/queryAudioById?business="+businessId;
         });
 
         $('[name = "goAudio"]').click(function () {
-            var businessId = $(this).find(".otherbusinessId").html();
+            var businessId = $(this).find(".businessId2").html();
+            console.log(businessId);
             window.location.href = "${pageContext.request.contextPath}/VideoController/queryVideoById?business="+businessId;
         })
     });
