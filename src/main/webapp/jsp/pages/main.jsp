@@ -129,6 +129,9 @@
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="graph_peity.html">音频列表</a>
                         </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAudioByOther">音频查询</a>
+                        </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="graph_sparkline.html">上传音频</a>
                         </li>

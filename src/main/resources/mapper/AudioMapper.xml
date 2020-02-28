@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.ykw.dao.IAudioDAO">
+
+    <select id="selectAudioInfoByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.Audio">
+        SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
+        WHERE audio.business_id = businessinfo.business_id
+        AND audio.business_id=#{businessId}
+    </select>
+
+    <select id="selectAudioInfoByDate" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
+        WHERE audio.business_id = businessinfo.business_id
+AND audio.audio_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
+    <select id="selectAudioInfoByDateAndId" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
+        WHERE audio.business_id = businessinfo.business_id AND audio.business_id = #{business_id}
+AND audio.audio_date BETWEEN #{startdate} AND #{enddate};
+    </select>
+
+    <select id="selectAudio"  resultType="com.qianfeng.ykw.pojo.Audio">
+            SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo where audio.business_id = businessinfo.business_id;
+    </select>
+
+</mapper>

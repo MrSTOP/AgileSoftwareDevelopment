@@ -101,10 +101,7 @@ public class VideoController {
     @RequestMapping("/queryVideoByOther")
     public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
         Map<String,Object> map = new HashMap<String, Object>();
-//        String business_name = (String)request.getAttribute("selectbusiness_name");
-//        String startdate = (String)request.getAttribute("startdate");
-//        String enddate = (String)request.getAttribute("enddate");
-        //System.out.println(startdate+"------"+enddate+"-----"+selectbusiness_name);
+
         if(selectbusiness_name == null ||selectbusiness_name.isEmpty()){
             if(startdate == null||enddate == null ||startdate.isEmpty()||enddate.isEmpty()){
                 map.put("selectType","0");
