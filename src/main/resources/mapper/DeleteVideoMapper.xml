@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.ykw.dao.IDeleteVideoDAO">
+    <select id="moveVideoToRecycleBinProcByIdAndType" parameterType="hashmap" statementType="CALLABLE">
+        {CALL moveVideoToRecycleBinProc(#{videoId}, #{businessId}, #{uid})}
+    </select>
+
+    <select id="selectAllRecycleBinVideo" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
+        SELECT deletevideo.video_id, deletevideo.video_title, deletevideo.video_src, deletevideo.video_date,
+               deletevideo.business_id, deletevideo.delete_video_date, deletevideo.delete_type, deletevideo.uid,
+               businessinfo.business_info_legal_person
+        FROM deletevideo, businessinfo WHERE deletevideo.business_id=businessinfo.business_id
+    </select>
+
+    <select id="selectRecycleBinVideoByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
+        SELECT deletevideo.video_id, deletevideo.video_title, deletevideo.video_src, deletevideo.video_date,
+               deletevideo.business_id, deletevideo.delete_video_date, deletevideo.delete_type, deletevideo.uid,
+               businessinfo.business_info_legal_person
+        FROM deletevideo, businessinfo WHERE deletevideo.business_id=businessinfo.business_id AND deletevideo.business_id=#{businessId}
+    </select>
+
+    <select id="recoverVideoFromRecycleBinProcById" parameterType="int" statementType="CALLABLE">
+        {CALL recoverVideoFromRecycleBinProc(#{videoId})}
+    </select>
+
+    <select id="selectDeleteVideoById" parameterType="int" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
+        SELECT * FROM deletevideo WHERE video_id=#{videoId}
+    </select>
+
+    <delete id="deleteVideoFromRecycleBinById" parameterType="int">
+        DELETE FROM deletevideo WHERE video_id=#{videoId}
+    </delete>
+</mapper>

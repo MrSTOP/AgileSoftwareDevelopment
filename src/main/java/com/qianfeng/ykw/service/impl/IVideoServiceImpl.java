@@ -2,6 +2,7 @@ package com.qianfeng.ykw.service.impl;
 
 import com.qianfeng.ykw.UserRoleType;
 import com.qianfeng.ykw.dao.BusinessDAO;
+import com.qianfeng.ykw.dao.IDeleteVideoDAO;
 import com.qianfeng.ykw.dao.IVideoDAO;
 import com.qianfeng.ykw.pojo.Business;
 import com.qianfeng.ykw.pojo.DeleteVideo;
@@ -29,6 +30,9 @@ public class IVideoServiceImpl implements IVideoService {
     IVideoDAO videoDAO;
     @Autowired
     BusinessDAO businessDAO;
+    
+    @Autowired
+    IDeleteVideoDAO deleteVideoDAO;
     
     /**
      * 上传视频
@@ -103,13 +107,13 @@ public class IVideoServiceImpl implements IVideoService {
     
     @Override
     public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
-        videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
+        deleteVideoDAO.moveVideoToRecycleBinProcByIdAndType(param);
     }
     
     @Override
     public boolean recoverVideoFromRecycleBinProcById(int videoId) {
         try {
-            videoDAO.recoverVideoFromRecycleBinProcById(videoId);
+            deleteVideoDAO.recoverVideoFromRecycleBinProcById(videoId);
             return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -120,7 +124,7 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request) {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
-        List<DeleteVideo> deleteVideoList = videoDAO.selectAllRecycleBinVideo();
+        List<DeleteVideo> deleteVideoList = deleteVideoDAO.selectAllRecycleBinVideo();
         setVideoIsRecoverable(deleteVideoList, userRoleType);
         return deleteVideoList;
     }
@@ -128,7 +132,7 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
-        List<DeleteVideo> deleteVideoList = videoDAO.selectRecycleBinVideoByBusinessId(businessId);
+        List<DeleteVideo> deleteVideoList = deleteVideoDAO.selectRecycleBinVideoByBusinessId(businessId);
         setVideoIsRecoverable(deleteVideoList, userRoleType);
         return deleteVideoList;
     }
@@ -136,12 +140,12 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException {
         String rootPath = request.getServletContext().getRealPath("");
-        DeleteVideo deleteVideo = videoDAO.selectDeleteVideoById(videoId);
+        DeleteVideo deleteVideo = deleteVideoDAO.selectDeleteVideoById(videoId);
         File videoFile = new File(rootPath, deleteVideo.getVideoSrc());
         if (!videoFile.delete()) {
             throw new IOException("Delete File Failed");
         }
-        return videoDAO.deleteVideoFromRecycleBinById(videoId) > 0;
+        return deleteVideoDAO.deleteVideoFromRecycleBinById(videoId) > 0;
     }
     
     /**
