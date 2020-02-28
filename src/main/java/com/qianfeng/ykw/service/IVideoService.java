@@ -1,5 +1,6 @@
 package com.qianfeng.ykw.service;
 
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.Video;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,4 +38,6 @@ public interface IVideoService {
     List<Video> selectVideoByDateAndName(Map<String, Object> parameter);
     
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
+    
+    List<DeleteVideo> selectAllRecycleBinVideo();
 }

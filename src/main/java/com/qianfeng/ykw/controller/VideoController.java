@@ -2,6 +2,7 @@ package com.qianfeng.ykw.controller;
 
 import com.qianfeng.ykw.UserRoleType;
 import com.qianfeng.ykw.pojo.Business;
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.SystemUser;
 import com.qianfeng.ykw.pojo.Video;
 import com.qianfeng.ykw.service.IVideoService;
@@ -75,6 +76,13 @@ public class VideoController {
         }
         videoService.moveVideoToRecycleBinProcByIdAndType(param);
         return "redirect:/VideoController/queryVideo";
+    }
+    
+    @RequestMapping("/queryAllRecycleBinVideo")
+    public String queryAllRecycleBinVideo(HttpServletRequest request) {
+        List<DeleteVideo> recycleBinVideoList = videoService.selectAllRecycleBinVideo();
+        request.setAttribute("recycleBinVideoList", recycleBinVideoList);
+        return "/pages/video/video_recycle_bin";
     }
 
     @RequestMapping("/queryVideoByOther")

@@ -11,6 +11,7 @@ public class DeleteVideo {
   private java.sql.Timestamp deleteVideoDate;
   private int deleteType;
   private int uid;
+  private String businessInfoLegalPerson;
 
 
   public int getVideoId() {
@@ -83,5 +84,12 @@ public class DeleteVideo {
   public void setUid(int uid) {
     this.uid = uid;
   }
-
+  
+  public String getBusinessInfoLegalPerson() {
+    return businessInfoLegalPerson;
+  }
+  
+  public void setBusinessInfoLegalPerson(String businessInfoLegalPerson) {
+    this.businessInfoLegalPerson = businessInfoLegalPerson;
+  }
 }

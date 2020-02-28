@@ -112,7 +112,7 @@
                         <a class="J_menuItem" href="">商户视频</a>
                         </li>
                         <li class="">
-                        <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/video/video_recycle_bin.jsp">回收站</a>
+                        <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryAllRecycleBinVideo">回收站</a>
                         </li>
                     </ul>
                 </li>

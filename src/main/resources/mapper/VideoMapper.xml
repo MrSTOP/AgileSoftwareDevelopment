@@ -33,6 +33,9 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
     </select>
 
     <select id="selectAllRecycleBinVideo" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
-        SELECT * FROM deletevideo
+        SELECT deletevideo.video_id, deletevideo.video_title, deletevideo.video_src, deletevideo.video_date,
+        deletevideo.business_id, deletevideo.delete_video_date, deletevideo.delete_type, deletevideo.uid,
+        businessinfo.business_info_legal_person
+        FROM deletevideo, businessinfo WHERE deletevideo.business_id=businessinfo.business_id
     </select>
 </mapper>

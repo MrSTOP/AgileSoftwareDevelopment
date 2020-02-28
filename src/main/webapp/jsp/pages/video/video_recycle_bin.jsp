@@ -50,20 +50,22 @@
                             <tr>
                                 <th>序号</th>
                                 <th>视频标题</th>
-                                <th>上传者</th>
                                 <th>上传时间</th>
+                                <th>上传者</th>
+                                <th>删除时间</th>
                                 <th>还原</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
                             <!--数据体 开始-->
                             <tbody>
-                            <c:forEach var="video" items="${requestScope.videoList}">
+                            <c:forEach var="video" items="${requestScope.recycleBinVideoList}">
                                 <tr class="gradeX">
-                                    <td>${video.businessId}</td>
+                                    <td>${video.videoId}</td>
                                     <td>${video.videoTitle}</td>
-                                    <td>${video.businessInfoLegalPerson}</td>
                                     <td class="center">${video.videoDate.toLocaleString()}</td>
+                                    <td class="center">${video.businessInfoLegalPerson}</td>
+                                    <td class="center">${video.deleteVideoDate.toLocaleString()}</td>
                                     <td class="center"><button type="button" class="btn btn-primary">还原</button></td>
                                 </tr>
                             </c:forEach>

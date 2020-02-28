@@ -3,6 +3,7 @@ package com.qianfeng.ykw.service.impl;
 import com.qianfeng.ykw.dao.BusinessDAO;
 import com.qianfeng.ykw.dao.IVideoDAO;
 import com.qianfeng.ykw.pojo.Business;
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.Video;
 import com.qianfeng.ykw.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +97,10 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
         videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
+    }
+    
+    @Override
+    public List<DeleteVideo> selectAllRecycleBinVideo() {
+        return videoDAO.selectAllRecycleBinVideo();
     }
 }
