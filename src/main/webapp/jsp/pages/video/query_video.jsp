@@ -53,6 +53,7 @@
                                 <th>上传者</th>
                                 <th>上传时间</th>
                                 <th>播放</th>
+                                <th>删除</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
@@ -60,11 +61,12 @@
                             <tbody>
                             <c:forEach var="video" items="${requestScope.videoList}">
                                 <tr class="gradeX">
-                                    <td>${video.businessId}</td>
+                                    <td class="videoId">${video.videoId}</td>
                                     <td>${video.videoTitle}</td>
                                     <td>${video.businessInfoLegalPerson}</td>
                                     <td class="center">${video.videoDate.toLocaleString()}</td>
                                     <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoPlay" onclick="changeVideo('${video.videoSrc}')">播放</button></td>
+                                    <td class="center"><button type="button" class="btn btn-danger deleteVideo">删除</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -124,8 +126,26 @@
 <script src="${pageContext.request.contextPath}/js/content.js?v=1.0.0"></script>
 <script>
     $(document).ready(function () {
-        $('.footable').footable();
-        $('.footable2').footable();
+        // $('.footable').footable();
+        // $('.footable2').footable();
+        $(".deleteVideo").on({"click": function () {
+                var trElement = $(this).parent().parent();
+                var videoId = $(trElement).children(".videoId").html();
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/VideoController/deleteVideo",
+                    type: "POST",
+                    data: "videoId=" + videoId,
+                    success: function (msg) {
+                        if (msg.result == true) {
+                            alert("删除成功");
+                            trElement.remove();
+                        } else {
+                            alert("删除失败");
+                        }
+                    }
+                });
+            }})
     });
     function changeVideo(src) {
         $("#videoPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);

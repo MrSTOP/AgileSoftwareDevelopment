@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qianfeng.ykw.dao.IDeleteVideoDAO">
     <select id="moveVideoToRecycleBinProcByIdAndType" parameterType="hashmap" statementType="CALLABLE">
-        {CALL moveVideoToRecycleBinProc(#{videoId}, #{businessId}, #{uid})}
+        {CALL moveVideoToRecycleBinProc(#{videoId}, #{deleteType}, #{uid})}
     </select>
 
     <select id="selectAllRecycleBinVideo" resultType="com.qianfeng.ykw.pojo.DeleteVideo">

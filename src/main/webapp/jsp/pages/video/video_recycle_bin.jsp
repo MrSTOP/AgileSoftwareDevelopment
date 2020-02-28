@@ -54,6 +54,7 @@
                                 <th>上传者</th>
                                 <th>删除时间</th>
                                 <th>还原</th>
+                                <th>彻底删除</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
@@ -61,12 +62,13 @@
                             <tbody>
                             <c:forEach var="video" items="${requestScope.recycleBinVideoList}">
                                 <tr class="gradeX">
-                                    <td>${video.videoId}</td>
+                                    <td class="videoId">${video.videoId}</td>
                                     <td>${video.videoTitle}</td>
                                     <td class="center">${video.videoDate.toLocaleString()}</td>
                                     <td class="center">${video.businessInfoLegalPerson}</td>
                                     <td class="center">${video.deleteVideoDate.toLocaleString()}</td>
-                                    <td class="center"><button type="button" class="btn btn-primary" ${video.recoverable ? "" : "disabled='disabled'"}>还原</button></td>
+                                    <td class="center"><button type="button" class="btn btn-primary recoverVideo" ${video.recoverable ? "" : "disabled='disabled'"}>还原</button></td>
+                                    <td class="center"><button type="button" class="btn btn-danger deleteVideoPermanently">彻底删除</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -108,7 +110,40 @@
 <script src="${pageContext.request.contextPath}/js/content.js?v=1.0.0"></script>
 <script>
     $(document).ready(function () {
-
+        $(".recoverVideo").on({"click": function () {
+            var trElement = $(this).parent().parent();
+            var videoId = $(trElement).children(".videoId").html();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/VideoController/recoverVideo",
+                    type: "POST",
+                    data: "videoId=" + videoId,
+                    success: function (msg) {
+                        if (msg.result == true) {
+                            alert("还原成功");
+                            trElement.remove();
+                        } else {
+                            alert("还原失败");
+                        }
+                    }
+                });
+            }});
+        $(".deleteVideoPermanently").on({"click": function () {
+                var trElement = $(this).parent().parent();
+                var videoId = $(trElement).children(".videoId").html();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/VideoController/deleteVideoPermanently",
+                    type: "POST",
+                    data: "videoId=" + videoId,
+                    success: function (msg) {
+                        if (msg.result == true) {
+                            alert("彻底删除成功");
+                            trElement.remove();
+                        } else {
+                            alert("彻底删除失败");
+                        }
+                    }
+                });
+            }});
     });
 </script>
 
