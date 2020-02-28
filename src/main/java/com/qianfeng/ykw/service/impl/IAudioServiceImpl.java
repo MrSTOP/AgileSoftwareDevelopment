@@ -41,13 +41,13 @@ public class IAudioServiceImpl implements IAudioService {
         //判断文件夹是否存在，不存在则创建
         File audioFileParentFile = audioFile.getParentFile();
         if (!audioFileParentFile.exists()) {
-            if (audioFileParentFile.mkdirs()) {
+            if (!audioFileParentFile.mkdirs()) {
                 throw new IOException("Create Folder Failed");
             }
         }
         //创建空文件
         if (!audioFile.exists()) {
-            if (audioFile.createNewFile()) {
+            if (!audioFile.createNewFile()) {
                 throw new IOException("Create Empty File Failed");
             }
         }

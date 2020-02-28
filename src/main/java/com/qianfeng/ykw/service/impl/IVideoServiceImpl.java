@@ -49,13 +49,13 @@ public class IVideoServiceImpl implements IVideoService {
         //判断文件夹是否存在，不存在则创建
         File videoFileParentFile = videoFile.getParentFile();
         if (!videoFileParentFile.exists()) {
-            if (videoFileParentFile.mkdirs()) {
+            if (!videoFileParentFile.mkdirs()) {
                 throw new IOException("Create Folder Failed");
             }
         }
         //创建空文件
         if (!videoFile.exists()) {
-            if (videoFile.createNewFile()) {
+            if (!videoFile.createNewFile()) {
                 throw new IOException("Create Empty File Failed");
             }
         }
