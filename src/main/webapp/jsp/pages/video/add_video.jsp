@@ -89,7 +89,12 @@
 <!-- 自定义js -->
 <script src="${pageContext.request.contextPath}/js/content.js?v=1.0.0"></script>
 
-
+<script>
+    var returnmsg = "${msg}";
+    if(returnmsg != ""){
+        alert(returnmsg);
+    }
+</script>
 
 
 </body>

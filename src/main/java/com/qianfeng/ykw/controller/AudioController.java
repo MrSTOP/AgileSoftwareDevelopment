@@ -43,8 +43,10 @@ public class AudioController {
             e.printStackTrace();
         }
         if (result) {
+            request.setAttribute("msg","上传成功");
             return "/pages/audio/add_audio";
         } else {
+            request.setAttribute("msg","上传失败");
             return null;
         }
     }
