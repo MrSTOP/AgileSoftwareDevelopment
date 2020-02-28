@@ -156,13 +156,13 @@
             console.log($(this).html());
             var businessId = $(this).find(".businessId1").html();
             console.log(businessId);
-            window.location.href = "${pageContext.request.contextPath}/VideoController/queryAudioById?business="+businessId;
+            window.location.href = "${pageContext.request.contextPath}/VideoController/queryVideoById?businessId="+businessId;
         });
 
         $('[name = "goAudio"]').click(function () {
             var businessId = $(this).find(".businessId2").html();
             console.log(businessId);
-            window.location.href = "${pageContext.request.contextPath}/VideoController/queryVideoById?business="+businessId;
+            window.location.href = "${pageContext.request.contextPath}/AudioController/queryAudioById?businessId="+businessId;
         })
     });
 
