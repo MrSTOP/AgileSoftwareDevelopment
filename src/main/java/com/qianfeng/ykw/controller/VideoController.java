@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +26,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("/VideoController")
 public class VideoController {
-
-
+    
+    
     @Autowired
     IVideoService videoService;
     
     /**
      * 上传视频文件
+     *
      * @param video
      * @param multipartFile
      * @param request
@@ -62,9 +62,11 @@ public class VideoController {
         return "/pages/video/query_video";
     }
     
-     @RequestMapping("/deleteVideo")
-    public String deleteVideo(int videoId, HttpServletRequest request) {
+    @RequestMapping("/deleteVideo")
+    @ResponseBody
+    public Map<String, Object> deleteVideo(int videoId, HttpServletRequest request) {
         Map<String, Object> param = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
         param.put("videoId", videoId);
         if (userRoleType == UserRoleType.ROLE_BUSINESS) {
@@ -75,8 +77,14 @@ public class VideoController {
             param.put("deleteType", DeleteVideo.DELETE_BY_ADMINISTRATOR);
             param.put("uid", systemUser.getUid());
         }
-        videoService.moveVideoToRecycleBinProcByIdAndType(param);
-        return "redirect:/VideoController/queryVideo";
+        try {
+            videoService.moveVideoToRecycleBinProcByIdAndType(param);
+            result.put("result", true);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            result.put("result", false);
+        }
+        return result;
     }
     
     @RequestMapping("/queryAllRecycleBinVideo")
@@ -106,28 +114,28 @@ public class VideoController {
     }
     
     @RequestMapping("/queryVideoByOther")
-    public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
-        Map<String,Object> map = new HashMap<String, Object>();
-
-        if(selectbusiness_name == null ||selectbusiness_name.isEmpty()){
-            if(startdate == null||enddate == null ||startdate.isEmpty()||enddate.isEmpty()){
-                map.put("selectType","0");
-            }else{
-                map.put("selectType","2");
+    public String queryVideoByOther(String selectbusiness_name, String startdate, String enddate, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        if (selectbusiness_name == null || selectbusiness_name.isEmpty()) {
+            if (startdate == null || enddate == null || startdate.isEmpty() || enddate.isEmpty()) {
+                map.put("selectType", "0");
+            } else {
+                map.put("selectType", "2");
             }
-        }else{
-            if(startdate == null||enddate == null||startdate.isEmpty()||enddate.isEmpty()){
-                map.put("selectType","1");
-            }else{
-                map.put("selectType","3");
+        } else {
+            if (startdate == null || enddate == null || startdate.isEmpty() || enddate.isEmpty()) {
+                map.put("selectType", "1");
+            } else {
+                map.put("selectType", "3");
             }
         }
-        map.put("business_name",selectbusiness_name);
-        map.put("startdate",startdate);
-        map.put("enddate",enddate);
+        map.put("business_name", selectbusiness_name);
+        map.put("startdate", startdate);
+        map.put("enddate", enddate);
         List<Video> videoList = videoService.selectVideoByDateAndName(map);
-        request.setAttribute("videoList",videoList);
+        request.setAttribute("videoList", videoList);
         return "pages/video/select_video";
     }
-
+    
 }
