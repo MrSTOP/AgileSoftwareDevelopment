@@ -147,12 +147,12 @@
             });
         });
 
-        $('[name = "goVideo"]').click()(function () {
+        $('[name = "goVideo"]').click(function () {
             var businessId = $(this).find(".otherbusinessId").html();
             window.location.href = "${pageContext.request.contextPath}/VideoController/queryAudioById?business="+businessId;
-        })
+        });
 
-        $('[name = "goAudio"]').click()(function () {
+        $('[name = "goAudio"]').click(function () {
             var businessId = $(this).find(".otherbusinessId").html();
             window.location.href = "${pageContext.request.contextPath}/VideoController/queryVideoById?business="+businessId;
         })

@@ -21,6 +21,7 @@
 
     <update id="updateBusinessInfo" parameterType="com.qianfeng.ykw.pojo.BusinessInfo">
         update businessinfo set business_info_name = #{businessInfoName}, business_info_legal_person = #{businessInfoLegalPerson}, business_info_legal_person_tel = #{businessInfoLegalPersonTel}
+        where business_id = #{businessId}
     </update>
 
     <select id="selectAllBusinessInfoWithPass" parameterType="int" resultType="com.qianfeng.ykw.pojo.BusinessInfo">

@@ -121,6 +121,24 @@ public class IVideoServiceImpl implements IVideoService {
     public List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request) {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
         List<DeleteVideo> deleteVideoList = videoDAO.selectAllRecycleBinVideo();
+        setVideoIsRecoverable(deleteVideoList, userRoleType);
+        return deleteVideoList;
+    }
+    
+    @Override
+    public List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        List<DeleteVideo> deleteVideoList = videoDAO.selectRecycleBinVideoByBusinessId(businessId);
+        setVideoIsRecoverable(deleteVideoList, userRoleType);
+        return deleteVideoList;
+    }
+    
+    /**
+     * 设置视频是否可以被还原
+     * @param deleteVideoList
+     * @param userRoleType
+     */
+    private void setVideoIsRecoverable(List<DeleteVideo> deleteVideoList, UserRoleType userRoleType) {
         for (DeleteVideo deleteVideo: deleteVideoList) {
             if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
                 deleteVideo.setRecoverable(true);
@@ -132,10 +150,9 @@ public class IVideoServiceImpl implements IVideoService {
                     case DeleteVideo.DELETE_BY_ADMINISTRATOR:
                     default:
                         deleteVideo.setRecoverable(false);
-                    break;
+                        break;
                 }
             }
         }
-        return deleteVideoList;
     }
 }

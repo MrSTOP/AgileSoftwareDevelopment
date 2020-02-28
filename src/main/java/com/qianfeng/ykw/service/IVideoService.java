@@ -63,4 +63,11 @@ public interface IVideoService {
      * @return
      */
     List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request);
+    
+    /**
+     * 根据商户id获取回收站中的视频
+     * @param businessId
+     * @return
+     */
+    List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request);
 }
