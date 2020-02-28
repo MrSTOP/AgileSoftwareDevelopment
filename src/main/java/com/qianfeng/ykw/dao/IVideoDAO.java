@@ -57,4 +57,10 @@ public interface IVideoDAO {
      * @return
      */
     List<DeleteVideo> selectAllRecycleBinVideo();
+    
+    /**
+     * 将指定的视频还原
+     * @param videoId
+     */
+    void recoverVideoFromRecycleBinProcById(int videoId);
 }

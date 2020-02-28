@@ -8,6 +8,7 @@ import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.Video;
 import com.qianfeng.ykw.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,6 +99,17 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
         videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
+    }
+    
+    @Override
+    public boolean recoverVideoFromRecycleBinProcById(int videoId) {
+        try {
+            videoDAO.recoverVideoFromRecycleBinProcById(videoId);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     @Override

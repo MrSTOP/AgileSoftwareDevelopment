@@ -38,4 +38,8 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
         businessinfo.business_info_legal_person
         FROM deletevideo, businessinfo WHERE deletevideo.business_id=businessinfo.business_id
     </select>
+
+    <select id="recoverVideoFromRecycleBinProcById" parameterType="int" statementType="CALLABLE">
+        {CALL recoverVideoFromRecycleBinProc(#{videoId})}
+    </select>
 </mapper>

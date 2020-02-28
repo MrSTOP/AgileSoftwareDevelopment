@@ -37,7 +37,22 @@ public interface IVideoService {
      */
     List<Video> selectVideoByDateAndName(Map<String, Object> parameter);
     
+    /**
+     * 将指定的视频移动到回收站
+     * @param param
+     */
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
     
+    /**
+     * 将回收站中指定的视频还原
+     * @param videoId
+     */
+    boolean recoverVideoFromRecycleBinProcById(int videoId);
+    
+    /**
+     * 获取回收站中所有视频
+     * @param request
+     * @return
+     */
     List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request);
 }

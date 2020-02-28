@@ -7,12 +7,15 @@ import com.qianfeng.ykw.pojo.SystemUser;
 import com.qianfeng.ykw.pojo.Video;
 import com.qianfeng.ykw.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +85,19 @@ public class VideoController {
         request.setAttribute("recycleBinVideoList", recycleBinVideoList);
         return "/pages/video/video_recycle_bin";
     }
-
+    
+    @RequestMapping("/recoverVideo")
+    @ResponseBody
+    public Map<String, Object> recoverVideo(int videoId) {
+        Map<String, Object> result = new HashMap<>();
+        if (videoService.recoverVideoFromRecycleBinProcById(videoId)) {
+            result.put("result", true);
+        } else {
+            result.put("result", false);
+        }
+        return result;
+    }
+    
     @RequestMapping("/queryVideoByOther")
     public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
         Map<String,Object> map = new HashMap<String, Object>();
