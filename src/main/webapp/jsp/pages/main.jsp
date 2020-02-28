@@ -85,7 +85,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li class="administratorFunc">
-                            <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessInfoController/selectAllBusinessInfo">商户列表</a>
+                            <a class="J_menuItem" href="graph_flot.html">商户列表</a>
                         </li>
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/BusinessController/selectBusinessIsfreeze">已冻结商户</a>
@@ -105,11 +105,17 @@
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryVideo">视频列表</a>
                         </li>
+                        <li class="administratorFunc">
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryVideoByOther">视频查询</a>
+                        </li>
                         <li class="businessFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/video/add_video.jsp">上传视频</a>
                         </li>
                         <li class="administratorFunc">
-                            <a class="J_menuItem" href="">商户视频</a>
+                        <a class="J_menuItem" href="">商户视频</a>
+                        </li>
+                        <li class="">
+                        <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryAllRecycleBinVideo">回收站</a>
                         </li>
                     </ul>
                 </li>

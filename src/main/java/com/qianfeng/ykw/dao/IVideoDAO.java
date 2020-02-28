@@ -1,8 +1,10 @@
 package com.qianfeng.ykw.dao;
 
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.pojo.Video;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 闫坤炜
@@ -23,4 +25,42 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideoInfoByBusinessId(int businessId);
+
+    /**
+     * 通过时间查找视频记录
+     * @param parameter
+     * @return
+     */
+    List<Video> selectVideoInfoByDate(Map<String, Object> parameter);
+
+    /**
+     * 通过时间名字查找视频
+     * @param parameter
+     * @return
+     */
+    List<Video> selectVideoInfoByDateAndId(Map<String, Object> parameter);
+
+    /**
+     *查找所有视频
+     * @return
+     */
+    List<Video> selectVideo();
+    
+    /**
+     * 将视频移到回收站
+     * @param param
+     */
+    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
+    
+    /**
+     * 获取回收站中所有视频
+     * @return
+     */
+    List<DeleteVideo> selectAllRecycleBinVideo();
+    
+    /**
+     * 将指定的视频还原
+     * @param videoId
+     */
+    void recoverVideoFromRecycleBinProcById(int videoId);
 }
