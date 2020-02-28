@@ -47,8 +47,6 @@ public interface IVideoService {
      * 将指定的视频移动到回收站
      * @param param
      */
-
-
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
     
     /**

@@ -1,11 +1,15 @@
 package com.qianfeng.ykw.service.impl;
 
+import com.qianfeng.ykw.UserRoleType;
 import com.qianfeng.ykw.dao.BusinessDAO;
 import com.qianfeng.ykw.dao.IAudioDAO;
+import com.qianfeng.ykw.dao.IDeleteAudioDAO;
 import com.qianfeng.ykw.pojo.Audio;
 import com.qianfeng.ykw.pojo.Business;
+import com.qianfeng.ykw.pojo.DeleteAudio;
 import com.qianfeng.ykw.service.IAudioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +25,8 @@ public class IAudioServiceImpl implements IAudioService {
     IAudioDAO audioDAO;
     @Autowired
     BusinessDAO businessDAO;
+    @Autowired
+    IDeleteAudioDAO deleteAudioDAO;
 
     /**
      * 上传音频
@@ -71,12 +77,12 @@ public class IAudioServiceImpl implements IAudioService {
     }
 
     /**
-     * 按指定要求查询用户视频
+     * 按指定要求查询用户音频
      * @param parameter
      * @return
      */
     @Override
-    public List<Audio> selectVideoByDateAndName(Map<String, Object> parameter) {
+    public List<Audio> selectAudioByDateAndName(Map<String, Object> parameter) {
         String selectType = (String)parameter.get("selectType");
 
         if(selectType == "0"){//没有条件
@@ -95,5 +101,72 @@ public class IAudioServiceImpl implements IAudioService {
             return audioDAO.selectAudioInfoByDateAndId(parameter);
         }
         return null;
+    }
+    
+    
+    @Override
+    public void moveAudioToRecycleBinProcByIdAndType(Map<String, Object> param) {
+        deleteAudioDAO.moveAudioToRecycleBinProcByIdAndType(param);
+    }
+    
+    @Override
+    public boolean recoverAudioFromRecycleBinProcById(int audioId) {
+        try {
+            deleteAudioDAO.recoverAudioFromRecycleBinProcById(audioId);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    @Override
+    public List<DeleteAudio> selectAllRecycleBinAudio(HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        List<DeleteAudio> deleteAudioList = deleteAudioDAO.selectAllRecycleBinAudio();
+        setAudioIsRecoverable(deleteAudioList, userRoleType);
+        return deleteAudioList;
+    }
+    
+    @Override
+    public List<DeleteAudio> selectRecycleBinAudioByBusinessId(int businessId, HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        List<DeleteAudio> deleteAudioList = deleteAudioDAO.selectRecycleBinAudioByBusinessId(businessId);
+        setAudioIsRecoverable(deleteAudioList, userRoleType);
+        return deleteAudioList;
+    }
+    
+    @Override
+    public boolean deleteAudioPermanently(int audioId, HttpServletRequest request) throws IOException {
+        String rootPath = request.getServletContext().getRealPath("");
+        DeleteAudio deleteAudio = deleteAudioDAO.selectDeleteAudioById(audioId);
+        File audioFile = new File(rootPath, deleteAudio.getAudioSrc());
+        if (!audioFile.delete()) {
+            throw new IOException("Delete File Failed");
+        }
+        return deleteAudioDAO.deleteAudioFromRecycleBinById(audioId) > 0;
+    }
+    
+    /**
+     * 设置音频是否可以被还原
+     * @param deleteAudioList
+     * @param userRoleType
+     */
+    private void setAudioIsRecoverable(List<DeleteAudio> deleteAudioList, UserRoleType userRoleType) {
+        for (DeleteAudio deleteAudio: deleteAudioList) {
+            if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
+                deleteAudio.setRecoverable(true);
+            } else if (userRoleType == UserRoleType.ROLE_BUSINESS) {
+                switch (deleteAudio.getDeleteType()) {
+                    case DeleteAudio.DELETE_BY_BUSINESS:
+                        deleteAudio.setRecoverable(true);
+                        break;
+                    case DeleteAudio.DELETE_BY_ADMINISTRATOR:
+                    default:
+                        deleteAudio.setRecoverable(false);
+                        break;
+                }
+            }
+        }
     }
 }

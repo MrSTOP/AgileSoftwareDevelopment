@@ -89,6 +89,12 @@ public class VideoController {
         return "/pages/video/query_video";
     }
     
+    /**
+     * 将Id对应的视频移入回收站
+     * @param videoId
+     * @param request
+     * @return
+     */
     @RequestMapping("/deleteVideo")
     @ResponseBody
     public Map<String, Object> deleteVideo(int videoId, HttpServletRequest request) {
@@ -114,6 +120,11 @@ public class VideoController {
         return result;
     }
     
+    /**
+     * 获取回收站中所有视频
+     * @param request
+     * @return
+     */
     @RequestMapping("/queryAllRecycleBinVideo")
     public String queryAllRecycleBinVideo(HttpServletRequest request) {
         List<DeleteVideo> recycleBinVideoList = videoService.selectAllRecycleBinVideo(request);
@@ -121,6 +132,12 @@ public class VideoController {
         return "/pages/video/video_recycle_bin";
     }
     
+    /**
+     * 获取回收站中对应businessId的所有视频
+     * @param businessId
+     * @param request
+     * @return
+     */
     @RequestMapping("/queryRecycleBinVideoByBusinessId")
     public String queryRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
         List<DeleteVideo> recycleBinVideoList = videoService.selectRecycleBinVideoByBusinessId(businessId, request);
@@ -128,6 +145,11 @@ public class VideoController {
         return "/pages/video/video_recycle_bin";
     }
     
+    /**
+     * 根据用户登录身份确定查询视频的范围
+     * @param request
+     * @return
+     */
     @RequestMapping("/queryRecycleBinVideo")
     public String queryRecycleBinVideo(HttpServletRequest request) {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
@@ -140,6 +162,11 @@ public class VideoController {
         return null;
     }
     
+    /**
+     * 将回收站中对应Id的视频还原
+     * @param videoId
+     * @return
+     */
     @RequestMapping("/recoverVideo")
     @ResponseBody
     public Map<String, Object> recoverVideo(int videoId) {
@@ -152,6 +179,12 @@ public class VideoController {
         return result;
     }
     
+    /**
+     * 将回收站中对应Id的视频彻底删除
+     * @param videoId
+     * @param request
+     * @return
+     */
     @RequestMapping("/deleteVideoPermanently")
     @ResponseBody
     public Map<String, Object> deleteVideoPermanently(int videoId, HttpServletRequest request) {

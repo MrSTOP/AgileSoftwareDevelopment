@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qianfeng.ykw.dao.IDeleteAudioDAO">
+    <select id="moveAudioToRecycleBinProcByIdAndType" parameterType="hashmap" statementType="CALLABLE">
+        {CALL moveAudioToRecycleBinProc(#{audioId}, #{deleteType}, #{uid})}
+    </select>
+
+    <select id="selectAllRecycleBinAudio" resultType="com.qianfeng.ykw.pojo.DeleteAudio">
+        SELECT deleteaudio.audio_id, deleteaudio.audio_title, deleteaudio.audio_src, deleteaudio.audio_date,
+               deleteaudio.business_id, deleteaudio.delete_audio_date, deleteaudio.delete_type, deleteaudio.uid,
+               businessinfo.business_info_legal_person
+        FROM deleteaudio, businessinfo WHERE deleteaudio.business_id=businessinfo.business_id
+    </select>
+
+    <select id="selectRecycleBinAudioByBusinessId" parameterType="int" resultType="com.qianfeng.ykw.pojo.DeleteAudio">
+        SELECT deleteaudio.audio_id, deleteaudio.audio_title, deleteaudio.audio_src, deleteaudio.audio_date,
+               deleteaudio.business_id, deleteaudio.delete_audio_date, deleteaudio.delete_type, deleteaudio.uid,
+               businessinfo.business_info_legal_person
+        FROM deleteaudio, businessinfo WHERE deleteaudio.business_id=businessinfo.business_id AND deleteaudio.business_id=#{businessId}
+    </select>
+
+    <select id="recoverAudioFromRecycleBinProcById" parameterType="int" statementType="CALLABLE">
+        {CALL recoverAudioFromRecycleBinProc(#{audioId})}
+    </select>
+
+    <select id="selectDeleteAudioById" parameterType="int" resultType="com.qianfeng.ykw.pojo.DeleteAudio">
+        SELECT * FROM deleteaudio WHERE audio_id=#{audioId}
+    </select>
+
+    <delete id="deleteAudioFromRecycleBinById" parameterType="int">
+        DELETE FROM deleteaudio WHERE audio_id=#{audioId}
+    </delete>
+</mapper>
