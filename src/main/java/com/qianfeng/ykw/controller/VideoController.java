@@ -101,6 +101,18 @@ public class VideoController {
         return "/pages/video/video_recycle_bin";
     }
     
+    @RequestMapping("/queryRecycleBinVideo")
+    public String queryRecycleBinVideo(HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
+            return queryAllRecycleBinVideo(request);
+        } else if (userRoleType == UserRoleType.ROLE_BUSINESS) {
+            int businessId = ((Business) request.getSession().getAttribute("business")).getBusinessId();
+            return queryRecycleBinVideoByBusinessId(businessId, request);
+        }
+        return null;
+    }
+    
     @RequestMapping("/recoverVideo")
     @ResponseBody
     public Map<String, Object> recoverVideo(int videoId) {
