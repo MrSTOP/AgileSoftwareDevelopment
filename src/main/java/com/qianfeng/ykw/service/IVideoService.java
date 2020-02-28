@@ -70,4 +70,12 @@ public interface IVideoService {
      * @return
      */
     List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request);
+    
+    /**
+     * 将指定的视频从回收站删除
+     * @param videoId
+     * @param request
+     * @return
+     */
+    boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException;
 }

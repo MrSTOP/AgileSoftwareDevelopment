@@ -76,4 +76,18 @@ public interface IVideoDAO {
      * @param videoId
      */
     void recoverVideoFromRecycleBinProcById(int videoId);
+    
+    /**
+     * 将指定的视频从回收站删除
+     * @param videoId
+     * @return
+     */
+    int deleteVideoFromRecycleBinById(int videoId);
+    
+    /**
+     * 查询回收站中指定Id的视频信息
+     * @param videoId
+     * @return
+     */
+    DeleteVideo selectDeleteVideoById(int videoId);
 }

@@ -133,6 +133,17 @@ public class IVideoServiceImpl implements IVideoService {
         return deleteVideoList;
     }
     
+    @Override
+    public boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException {
+        String rootPath = request.getServletContext().getRealPath("");
+        DeleteVideo deleteVideo = videoDAO.selectDeleteVideoById(videoId);
+        File videoFile = new File(rootPath, deleteVideo.getVideoSrc());
+        if (!videoFile.delete()) {
+            throw new IOException("Delete File Failed");
+        }
+        return videoDAO.deleteVideoFromRecycleBinById(videoId) > 0;
+    }
+    
     /**
      * 设置视频是否可以被还原
      * @param deleteVideoList

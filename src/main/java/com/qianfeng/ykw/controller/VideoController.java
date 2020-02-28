@@ -150,6 +150,24 @@ public class VideoController {
         return result;
     }
     
+    @RequestMapping("/deleteVideoPermanently")
+    @ResponseBody
+    public Map<String, Object> deleteVideoPermanently(int videoId, HttpServletRequest request) {
+        //TODO
+        Map<String, Object> result = new HashMap<>();
+        try {
+            if (videoService.deleteVideoPermanently(videoId, request)) {
+                result.put("result", true);
+            } else {
+                result.put("result", false);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            result.put("result", false);
+        }
+        return result;
+    }
+    
     @RequestMapping("/queryVideoByOther")
     public String queryVideoByOther(String selectbusiness_name, String startdate, String enddate, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();

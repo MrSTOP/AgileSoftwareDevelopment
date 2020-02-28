@@ -54,4 +54,12 @@ AND video.video_date BETWEEN #{startdate} AND #{enddate};
     <select id="recoverVideoFromRecycleBinProcById" parameterType="int" statementType="CALLABLE">
         {CALL recoverVideoFromRecycleBinProc(#{videoId})}
     </select>
+
+    <select id="selectDeleteVideoById" parameterType="int" resultType="com.qianfeng.ykw.pojo.DeleteVideo">
+        SELECT * FROM deletevideo WHERE video_id=#{videoId}
+    </select>
+
+    <delete id="deleteVideoFromRecycleBinById" parameterType="int">
+        DELETE FROM deletevideo WHERE video_id=#{videoId}
+    </delete>
 </mapper>
