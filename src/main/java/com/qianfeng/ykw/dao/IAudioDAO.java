@@ -6,14 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 public interface IAudioDAO {
+    /**
+     * 插入新音频信息
+     * @param audio
+     * @return
+     */
+    int insertNewAudio(Audio audio);
 
     /**
-     * 通过用户ID查询音频
+     * 查询指定用户上传的视频数据
      * @param businessId
      * @return
      */
     List<Audio> selectAudioInfoByBusinessId(int businessId);
 
+    /**
+     * 查询所有用户上传的视频数据
+     * @return
+     */
+    List<Audio> selectAllAudio();
 
     /**
      * 通过时间段查询音频

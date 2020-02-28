@@ -2,6 +2,7 @@ package com.qianfeng.ykw.service.impl;
 
 import com.qianfeng.ykw.UserRoleType;
 import com.qianfeng.ykw.dao.BusinessDAO;
+import com.qianfeng.ykw.dao.IDeleteVideoDAO;
 import com.qianfeng.ykw.dao.IVideoDAO;
 import com.qianfeng.ykw.pojo.Business;
 import com.qianfeng.ykw.pojo.DeleteVideo;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author 闫坤炜
@@ -30,6 +32,9 @@ public class IVideoServiceImpl implements IVideoService {
     @Autowired
     BusinessDAO businessDAO;
     
+    @Autowired
+    IDeleteVideoDAO deleteVideoDAO;
+    
     /**
      * 上传视频
      * @param video
@@ -42,20 +47,21 @@ public class IVideoServiceImpl implements IVideoService {
     public boolean upload(Video video, MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         int businessId = ((Business)request.getSession().getAttribute("business")).getBusinessId();
         //准备文件在服务器上保存的位置
+        String uuid = UUID.randomUUID().toString();
         String rootPath = request.getServletContext().getRealPath("");
-        String filePath = rootPath + "/videos/" + multipartFile.getOriginalFilename();
-        System.out.println(filePath);
+        String fileSrc = "videos/" + uuid + "-" +multipartFile.getOriginalFilename();
+        String filePath = rootPath + fileSrc;
         File videoFile = new File(filePath);
         //判断文件夹是否存在，不存在则创建
         File videoFileParentFile = videoFile.getParentFile();
         if (!videoFileParentFile.exists()) {
-            if (videoFileParentFile.mkdirs()) {
+            if (!videoFileParentFile.mkdirs()) {
                 throw new IOException("Create Folder Failed");
             }
         }
         //创建空文件
         if (!videoFile.exists()) {
-            if (videoFile.createNewFile()) {
+            if (!videoFile.createNewFile()) {
                 throw new IOException("Create Empty File Failed");
             }
         }
@@ -63,7 +69,7 @@ public class IVideoServiceImpl implements IVideoService {
         multipartFile.transferTo(videoFile);
         //接收数据
         video.setBusinessId(businessId);
-        video.setVideoSrc("/videos/" + multipartFile.getOriginalFilename());
+        video.setVideoSrc(fileSrc);
         //数据保存
         return videoDAO.insertNewVideo(video) > 0;
     }
@@ -71,6 +77,11 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<Video> selectVideoInfoByBusinessId(int businessId) {
         return videoDAO.selectVideoInfoByBusinessId(businessId);
+    }
+
+    @Override
+    public List<Video> selectAllVideo() {
+        return videoDAO.selectAllVideo();
     }
 
     @Override
@@ -98,13 +109,13 @@ public class IVideoServiceImpl implements IVideoService {
     
     @Override
     public void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param) {
-        videoDAO.moveVideoToRecycleBinProcByIdAndType(param);
+        deleteVideoDAO.moveVideoToRecycleBinProcByIdAndType(param);
     }
     
     @Override
     public boolean recoverVideoFromRecycleBinProcById(int videoId) {
         try {
-            videoDAO.recoverVideoFromRecycleBinProcById(videoId);
+            deleteVideoDAO.recoverVideoFromRecycleBinProcById(videoId);
             return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
@@ -115,7 +126,36 @@ public class IVideoServiceImpl implements IVideoService {
     @Override
     public List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request) {
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
-        List<DeleteVideo> deleteVideoList = videoDAO.selectAllRecycleBinVideo();
+        List<DeleteVideo> deleteVideoList = deleteVideoDAO.selectAllRecycleBinVideo();
+        setVideoIsRecoverable(deleteVideoList, userRoleType);
+        return deleteVideoList;
+    }
+    
+    @Override
+    public List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        List<DeleteVideo> deleteVideoList = deleteVideoDAO.selectRecycleBinVideoByBusinessId(businessId);
+        setVideoIsRecoverable(deleteVideoList, userRoleType);
+        return deleteVideoList;
+    }
+    
+    @Override
+    public boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException {
+        String rootPath = request.getServletContext().getRealPath("");
+        DeleteVideo deleteVideo = deleteVideoDAO.selectDeleteVideoById(videoId);
+        File videoFile = new File(rootPath, deleteVideo.getVideoSrc());
+        if (!videoFile.delete()) {
+            throw new IOException("Delete File Failed");
+        }
+        return deleteVideoDAO.deleteVideoFromRecycleBinById(videoId) > 0;
+    }
+    
+    /**
+     * 设置视频是否可以被还原
+     * @param deleteVideoList
+     * @param userRoleType
+     */
+    private void setVideoIsRecoverable(List<DeleteVideo> deleteVideoList, UserRoleType userRoleType) {
         for (DeleteVideo deleteVideo: deleteVideoList) {
             if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
                 deleteVideo.setRecoverable(true);
@@ -127,10 +167,9 @@ public class IVideoServiceImpl implements IVideoService {
                     case DeleteVideo.DELETE_BY_ADMINISTRATOR:
                     default:
                         deleteVideo.setRecoverable(false);
-                    break;
+                        break;
                 }
             }
         }
-        return deleteVideoList;
     }
 }

@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +26,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("/VideoController")
 public class VideoController {
-
-
+    
+    
     @Autowired
     IVideoService videoService;
     
     /**
      * 上传视频文件
+     *
      * @param video
      * @param multipartFile
      * @param request
@@ -48,8 +48,10 @@ public class VideoController {
             e.printStackTrace();
         }
         if (result) {
+            request.setAttribute("msg","上传成功");
             return "/pages/video/add_video";
         } else {
+            request.setAttribute("msg","上传失败");
             return null;
         }
     }
@@ -61,10 +63,43 @@ public class VideoController {
         request.setAttribute("videoList", videoList);
         return "/pages/video/query_video";
     }
+
+    /**
+     * 查询所有商户所有视频
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryAllVideo")
+    public String queryAllVideo(HttpServletRequest request) {
+        List<Video> videoList = videoService.selectAllVideo();
+        request.setAttribute("videoList", videoList);
+        return "/pages/video/query_video";
+    }
+
+    /**
+     * 根据获取用户businessId查询对应音频
+     * @param businessId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryVideoById")
+    public String queryVideoById(int businessId,HttpServletRequest request){
+        List<Video> videoList = videoService.selectVideoInfoByBusinessId(businessId);
+        request.setAttribute("videoList", videoList);
+        return "/pages/video/query_video";
+    }
     
-     @RequestMapping("/deleteVideo")
-    public String deleteVideo(int videoId, HttpServletRequest request) {
+    /**
+     * 将Id对应的视频移入回收站
+     * @param videoId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/deleteVideo")
+    @ResponseBody
+    public Map<String, Object> deleteVideo(int videoId, HttpServletRequest request) {
         Map<String, Object> param = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
         param.put("videoId", videoId);
         if (userRoleType == UserRoleType.ROLE_BUSINESS) {
@@ -75,10 +110,21 @@ public class VideoController {
             param.put("deleteType", DeleteVideo.DELETE_BY_ADMINISTRATOR);
             param.put("uid", systemUser.getUid());
         }
-        videoService.moveVideoToRecycleBinProcByIdAndType(param);
-        return "redirect:/VideoController/queryVideo";
+        try {
+            videoService.moveVideoToRecycleBinProcByIdAndType(param);
+            result.put("result", true);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            result.put("result", false);
+        }
+        return result;
     }
     
+    /**
+     * 获取回收站中所有视频
+     * @param request
+     * @return
+     */
     @RequestMapping("/queryAllRecycleBinVideo")
     public String queryAllRecycleBinVideo(HttpServletRequest request) {
         List<DeleteVideo> recycleBinVideoList = videoService.selectAllRecycleBinVideo(request);
@@ -86,6 +132,41 @@ public class VideoController {
         return "/pages/video/video_recycle_bin";
     }
     
+    /**
+     * 获取回收站中对应businessId的所有视频
+     * @param businessId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryRecycleBinVideoByBusinessId")
+    public String queryRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
+        List<DeleteVideo> recycleBinVideoList = videoService.selectRecycleBinVideoByBusinessId(businessId, request);
+        request.setAttribute("recycleBinVideoList", recycleBinVideoList);
+        return "/pages/video/video_recycle_bin";
+    }
+    
+    /**
+     * 根据用户登录身份确定查询视频的范围
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryRecycleBinVideo")
+    public String queryRecycleBinVideo(HttpServletRequest request) {
+        UserRoleType userRoleType = (UserRoleType) request.getSession().getAttribute("UserRoleType");
+        if (userRoleType == UserRoleType.ROLE_ADMINISTRATOR) {
+            return queryAllRecycleBinVideo(request);
+        } else if (userRoleType == UserRoleType.ROLE_BUSINESS) {
+            int businessId = ((Business) request.getSession().getAttribute("business")).getBusinessId();
+            return queryRecycleBinVideoByBusinessId(businessId, request);
+        }
+        return null;
+    }
+    
+    /**
+     * 将回收站中对应Id的视频还原
+     * @param videoId
+     * @return
+     */
     @RequestMapping("/recoverVideo")
     @ResponseBody
     public Map<String, Object> recoverVideo(int videoId) {
@@ -98,29 +179,53 @@ public class VideoController {
         return result;
     }
     
-    @RequestMapping("/queryVideoByOther")
-    public String queryVideoByOther(String selectbusiness_name,String startdate,String enddate,HttpServletRequest request){
-        Map<String,Object> map = new HashMap<String, Object>();
-
-        if(selectbusiness_name == null ||selectbusiness_name.isEmpty()){
-            if(startdate == null||enddate == null ||startdate.isEmpty()||enddate.isEmpty()){
-                map.put("selectType","0");
-            }else{
-                map.put("selectType","2");
+    /**
+     * 将回收站中对应Id的视频彻底删除
+     * @param videoId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/deleteVideoPermanently")
+    @ResponseBody
+    public Map<String, Object> deleteVideoPermanently(int videoId, HttpServletRequest request) {
+        //TODO
+        Map<String, Object> result = new HashMap<>();
+        try {
+            if (videoService.deleteVideoPermanently(videoId, request)) {
+                result.put("result", true);
+            } else {
+                result.put("result", false);
             }
-        }else{
-            if(startdate == null||enddate == null||startdate.isEmpty()||enddate.isEmpty()){
-                map.put("selectType","1");
-            }else{
-                map.put("selectType","3");
+        } catch (IOException e) {
+            e.printStackTrace();
+            result.put("result", false);
+        }
+        return result;
+    }
+    
+    @RequestMapping("/queryVideoByOther")
+    public String queryVideoByOther(String selectbusiness_name, String startdate, String enddate, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        
+        if (selectbusiness_name == null || selectbusiness_name.isEmpty()) {
+            if (startdate == null || enddate == null || startdate.isEmpty() || enddate.isEmpty()) {
+                map.put("selectType", "0");
+            } else {
+                map.put("selectType", "2");
+            }
+        } else {
+            if (startdate == null || enddate == null || startdate.isEmpty() || enddate.isEmpty()) {
+                map.put("selectType", "1");
+            } else {
+                map.put("selectType", "3");
             }
         }
-        map.put("business_name",selectbusiness_name);
-        map.put("startdate",startdate);
-        map.put("enddate",enddate);
+        map.put("business_name", selectbusiness_name);
+        map.put("startdate", startdate);
+        map.put("enddate", enddate);
         List<Video> videoList = videoService.selectVideoByDateAndName(map);
-        request.setAttribute("videoList",videoList);
+        request.setAttribute("videoList", videoList);
         return "pages/video/select_video";
     }
-
+    
 }

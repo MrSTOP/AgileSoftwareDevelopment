@@ -1,9 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  Author: 闫坤炜
-  User: MrST
-  Date: 2020/2/26
-  Time: 14:23
+  User: 54439
+  Date: 2020/2/27
+  Time: 19:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" language="java" %>
@@ -33,13 +32,13 @@
 <body class="gray-bg">
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>新建页面</h2>
+        <h2>上传音频</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">某块名</a>
+                <a href="index.html">视频音频</a>
             </li>
             <li>
-                <strong>子模块名</strong>
+                <strong>上传音频</strong>
             </li>
         </ol>
     </div>
@@ -55,16 +54,16 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/VideoController/uploadVideo" class="form-horizontal">
+                    <form method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/AudioController/uploadAudio" class="form-horizontal">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">标题</label>
                             <div class="col-sm-10">
-                                <input type="text" name="videoTitle" class="form-control">
+                                <input type="text" name="audioTitle" class="form-control">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">视频</label>
+                            <label class="col-sm-2 control-label">音频</label>
                             <div class="col-sm-10">
                                 <input type="file" name="multipartFile" class="form-control">
                             </div>
@@ -100,4 +99,3 @@
 </body>
 
 </html>
-

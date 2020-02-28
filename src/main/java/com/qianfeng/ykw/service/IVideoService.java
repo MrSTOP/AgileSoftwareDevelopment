@@ -31,6 +31,12 @@ public interface IVideoService {
     List<Video> selectVideoInfoByBusinessId(int businessId);
 
     /**
+     * 查询所有用户上传的视频数据
+     * @return
+     */
+    List<Video> selectAllVideo();
+
+    /**
      * 按指定要求查询用户视频
      * @param parameter
      * @return
@@ -41,8 +47,6 @@ public interface IVideoService {
      * 将指定的视频移动到回收站
      * @param param
      */
-
-
     void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
     
     /**
@@ -57,4 +61,19 @@ public interface IVideoService {
      * @return
      */
     List<DeleteVideo> selectAllRecycleBinVideo(HttpServletRequest request);
+    
+    /**
+     * 根据商户id获取回收站中的视频
+     * @param businessId
+     * @return
+     */
+    List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request);
+    
+    /**
+     * 将指定的视频从回收站删除
+     * @param videoId
+     * @param request
+     * @return
+     */
+    boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException;
 }

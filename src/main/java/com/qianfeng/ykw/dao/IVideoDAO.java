@@ -45,22 +45,11 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideo();
-    
+
     /**
-     * 将视频移到回收站
-     * @param param
-     */
-    void moveVideoToRecycleBinProcByIdAndType(Map<String, Object> param);
-    
-    /**
-     * 获取回收站中所有视频
+     * 查询所有用户上传的视频数据
      * @return
      */
-    List<DeleteVideo> selectAllRecycleBinVideo();
-    
-    /**
-     * 将指定的视频还原
-     * @param videoId
-     */
-    void recoverVideoFromRecycleBinProcById(int videoId);
+    List<Video> selectAllVideo();
+
 }

@@ -1,9 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  Author: 闫坤炜
-  User: MrST
+  User: 54439
   Date: 2020/2/27
-  Time: 10:12
+  Time: 20:15
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" language="java" %>
@@ -35,7 +34,7 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>视频列表</h5>
+                    <h5>音频列表</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -50,23 +49,26 @@
                             <tr>
                                 <th>序号</th>
                                 <th>视频标题</th>
-                                <th>上传者</th>
                                 <th>上传时间</th>
-                                <th>播放</th>
-                                <th>删除</th>
+                                <th>上传者</th>
+                                <th>删除时间</th>
+                                <th>还原</th>
+                                <th>彻底删除</th>
                             </tr>
                             </thead>
                             <!--数据头 结束-->
                             <!--数据体 开始-->
                             <tbody>
-                            <c:forEach var="video" items="${requestScope.videoList}">
+
+                            <c:forEach var="audio" items="${requestScope.recycleBinAudioList}">
                                 <tr class="gradeX">
-                                    <td class="videoId">${video.videoId}</td>
-                                    <td>${video.videoTitle}</td>
-                                    <td>${video.businessInfoLegalPerson}</td>
-                                    <td class="center">${video.videoDate.toLocaleString()}</td>
-                                    <td class="center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoPlay" onclick="changeVideo('${video.videoSrc}')">播放</button></td>
-                                    <td class="center"><button type="button" class="btn btn-danger deleteVideo">删除</button></td>
+                                    <td class="audioId">${audio.audioId}</td>
+                                    <td>${audio.audioTitle}</td>
+                                    <td class="center">${audio.audioDate.toLocaleString()}</td>
+                                    <td class="center">${audio.businessInfoLegalPerson}</td>
+                                    <td class="center">${audio.deleteAudioDate.toLocaleString()}</td>
+                                    <td class="center"><button type="button" class="btn btn-primary recoverAudio" ${audio.recoverable ? "" : "disabled='disabled'"}>还原</button></td>
+                                    <td class="center"><button type="button" class="btn btn-danger deleteAudioPermanently">彻底删除</button></td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -89,20 +91,20 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="videoPlay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="audioPlay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="videoPlayTitle">视频</h4>
+                <h4 class="modal-title" id="audioPlayTitle">音频</h4>
             </div>
             <div class="modal-body">
-                <video id="videoPlaySrc" src="" controls="controls"
-                       width="300" height="500"></video>
+                <audio id="audioPlaySrc" src="" controls="controls"
+                       width="300" height="500"></audio>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-<%--                <button type="button" class="btn btn-primary">Save changes</button>--%>
+                <%--                <button type="button" class="btn btn-primary">Save changes</button>--%>
             </div>
         </div>
     </div>
@@ -128,31 +130,47 @@
     $(document).ready(function () {
         // $('.footable').footable();
         // $('.footable2').footable();
-        $(".deleteVideo").on({"click": function () {
-                var trElement = $(this).parent().parent();
-                var videoId = $(trElement).children(".videoId").html();
 
+        $(".recoverAudio").on({"click": function () {
+                var trElement = $(this).parent().parent();
+                var audioId = $(trElement).children(".audioId").html();
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/VideoController/deleteVideo",
+                    url: "${pageContext.request.contextPath}/AudioController/recoverAudio",
                     type: "POST",
-                    data: "videoId=" + videoId,
+                    data: "audioId=" + audioId,
                     success: function (msg) {
                         if (msg.result == true) {
-                            alert("删除成功");
+                            alert("还原成功");
                             trElement.remove();
                         } else {
-                            alert("删除失败");
+                            alert("还原失败");
                         }
                     }
                 });
-            }})
+            }});
+        $(".deleteAudioPermanently").on({"click": function () {
+                var trElement = $(this).parent().parent();
+                var audioId = $(trElement).children(".audioId").html();
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/AudioController/deleteAudioPermanently",
+                    type: "POST",
+                    data: "audioId=" + audioId,
+                    success: function (msg) {
+                        if (msg.result == true) {
+                            alert("彻底删除成功");
+                            trElement.remove();
+                        } else {
+                            alert("彻底删除失败");
+                        }
+                    }
+                });
+            }});
     });
-    function changeVideo(src) {
-        $("#videoPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);
+    function changeAudio(src) {
+        $("#audioPlaySrc").attr("src", "${pageContext.request.contextPath}" + src);
     }
 </script>
 
 </body>
 
 </html>
-
