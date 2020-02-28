@@ -35,7 +35,7 @@
         <div class="col-sm-12">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>视频查询</h5>
+                    <h5>音频查询</h5>
                 </div>
                 <div class="ibox-content">
                     <form method="post" action="${pageContext.request.contextPath}/VideoController/queryVideoByOther" class="form-horizontal">
@@ -48,7 +48,7 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">开始</label>
+                            <label class="col-sm-2 control-label">开始时间</label>
 
                             <div class="col-sm-10">
                                 <input type="date" id="startdate" class="form-control" name="startdate">
@@ -56,7 +56,7 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">结束</label>
+                            <label class="col-sm-2 control-label">结束时间</label>
 
                             <div class="col-sm-10">
                                 <input type="date" id="enddate" class="form-control" name="enddate">
