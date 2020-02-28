@@ -59,6 +59,13 @@ public interface IVideoDAO {
     List<DeleteVideo> selectAllRecycleBinVideo();
     
     /**
+     * 根据商户id获取回收站中的视频
+     * @param businessId
+     * @return
+     */
+    List<DeleteVideo> selectRecycleBinVideoByBusinessId(int businessId);
+    
+    /**
      * 将指定的视频还原
      * @param videoId
      */

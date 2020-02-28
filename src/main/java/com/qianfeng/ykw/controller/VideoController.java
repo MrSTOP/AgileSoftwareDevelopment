@@ -86,6 +86,13 @@ public class VideoController {
         return "/pages/video/video_recycle_bin";
     }
     
+    @RequestMapping("/queryRecycleBinVideoByBusinessId")
+    public String queryRecycleBinVideoByBusinessId(int businessId, HttpServletRequest request) {
+        List<DeleteVideo> recycleBinVideoList = videoService.selectRecycleBinVideoByBusinessId(businessId, request);
+        request.setAttribute("recycleBinVideoList", recycleBinVideoList);
+        return "/pages/video/video_recycle_bin";
+    }
+    
     @RequestMapping("/recoverVideo")
     @ResponseBody
     public Map<String, Object> recoverVideo(int videoId) {
