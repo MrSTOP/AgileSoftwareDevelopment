@@ -98,8 +98,8 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-2">
-                                <button class="btn btn-primary" type="submit">保存内容</button>
-                                <button class="btn btn-white" type="button">取消</button>
+                                <button class="btn btn-primary" type="submit">提交修改</button>
+                                <button class="btn btn-white" type="reset">清空</button>
                             </div>
                         </div>
                     </form>
