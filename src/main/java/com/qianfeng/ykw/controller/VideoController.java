@@ -48,8 +48,10 @@ public class VideoController {
             e.printStackTrace();
         }
         if (result) {
+            request.setAttribute("msg","上传成功");
             return "/pages/video/add_video";
         } else {
+            request.setAttribute("msg","上传失败");
             return null;
         }
     }
