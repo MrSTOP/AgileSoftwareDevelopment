@@ -11,7 +11,7 @@
  Target Server Version : 50541
  File Encoding         : 65001
 
- Date: 27/02/2020 15:23:09
+ Date: 28/02/2020 11:52:35
 */
 
 SET NAMES utf8mb4;
@@ -37,14 +37,16 @@ DROP TABLE IF EXISTS `business`;
 CREATE TABLE `business`  (
   `business_id` int(9) NOT NULL AUTO_INCREMENT,
   `business_username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `business_isfreeze` tinyint(1) NULL DEFAULT 0,
   PRIMARY KEY (`business_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of business
 -- ----------------------------
-INSERT INTO `business` VALUES (1, 'wanda');
-INSERT INTO `business` VALUES (7, 'test');
+INSERT INTO `business` VALUES (1, 'wanda', 0);
+INSERT INTO `business` VALUES (7, 'test', 0);
+INSERT INTO `business` VALUES (8, 'w', 0);
 
 -- ----------------------------
 -- Table structure for businessinfo
@@ -57,7 +59,7 @@ CREATE TABLE `businessinfo`  (
   `business_info_legal_person_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `business_id` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`business_info_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of businessinfo
@@ -65,6 +67,7 @@ CREATE TABLE `businessinfo`  (
 INSERT INTO `businessinfo` VALUES (1, '万达', '王健林', '123456789', 1);
 INSERT INTO `businessinfo` VALUES (2, NULL, NULL, NULL, 6);
 INSERT INTO `businessinfo` VALUES (3, NULL, NULL, NULL, 7);
+INSERT INTO `businessinfo` VALUES (4, NULL, NULL, NULL, 8);
 
 -- ----------------------------
 -- Table structure for businesspassword
@@ -75,7 +78,7 @@ CREATE TABLE `businesspassword`  (
   `business_password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `business_id` int(9) NULL DEFAULT NULL,
   PRIMARY KEY (`business_password_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of businesspassword
@@ -83,6 +86,7 @@ CREATE TABLE `businesspassword`  (
 INSERT INTO `businesspassword` VALUES (1, '123', 1);
 INSERT INTO `businesspassword` VALUES (2, '123', 6);
 INSERT INTO `businesspassword` VALUES (3, '123456', 7);
+INSERT INTO `businesspassword` VALUES (4, '123', 8);
 
 -- ----------------------------
 -- Table structure for deleteaudio
@@ -115,6 +119,11 @@ CREATE TABLE `deletevideo`  (
   `uid` int(9) NULL DEFAULT NULL,
   PRIMARY KEY (`video_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of deletevideo
+-- ----------------------------
+INSERT INTO `deletevideo` VALUES (6, 'gfgdhfgh', '/videos/5992816a8f847483c0f47ce3796fa3a8.mp4', '2020-02-27 18:07:49', 1, '2020-02-27 18:08:18', 0, 1);
 
 -- ----------------------------
 -- Table structure for loginpassword
@@ -179,7 +188,7 @@ CREATE TABLE `video`  (
   `video_date` datetime NULL DEFAULT NULL,
   `business_id` int(9) NULL DEFAULT NULL,
   PRIMARY KEY (`video_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of video
@@ -187,5 +196,86 @@ CREATE TABLE `video`  (
 INSERT INTO `video` VALUES (1, 'GGGG', '/videos/3e62852815558a84bfeed05abd35a65c.mp4', '2020-02-26 15:06:44', 1);
 INSERT INTO `video` VALUES (2, 'AAA', '/videos/4ca53baea33e7f92c7a5b53df2ab54aa.mp4', '2020-02-27 11:48:52', 1);
 INSERT INTO `video` VALUES (3, 'GGGG', '/videos/3e62852815558a84bfeed05abd35a65c.mp4', '2020-02-27 11:49:17', 1);
+INSERT INTO `video` VALUES (4, '4', '4', '2020-02-27 22:08:25', 1);
+
+-- ----------------------------
+-- Procedure structure for moveAudioToRecycleBinProc
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `moveAudioToRecycleBinProc`;
+delimiter ;;
+CREATE PROCEDURE `moveAudioToRecycleBinProc`(IN audioId int, IN deleteType int, IN uid INT)
+BEGIN
+	DECLARE audioTitle VARCHAR(255);
+	DECLARE audioSrc VARCHAR(255);
+	DECLARE audioDate datetime;
+	DECLARE businessId int;
+	START TRANSACTION;
+	SELECT audio_title, audio_src, audio_date, business_id INTO audioTitle, audioSrc, audioDate, businessId FROM audio WHERE audio_id=audioId;
+	INSERT INTO deleteaudio (audio_id, audio_title, audio_src, audio_date, business_id, delete_audio_date, delete_type, uid) VALUES(audioId, audioTitle, audioSrc, audioDate, businessId, SYSDATE(), deleteType, uid);
+	DELETE FROM audio WHERE audio_id=audioId;
+	COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for moveVideoToRecycleBinProc
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `moveVideoToRecycleBinProc`;
+delimiter ;;
+CREATE PROCEDURE `moveVideoToRecycleBinProc`(IN videoId int, IN deleteType int, IN uid INT)
+BEGIN
+	DECLARE videoTitle VARCHAR(255);
+	DECLARE videoSrc VARCHAR(255);
+	DECLARE videoDate datetime;
+	DECLARE businessId int;
+	START TRANSACTION;
+	SELECT video_title, video_src, video_date, business_id INTO videoTitle, videoSrc, videoDate, businessId FROM video WHERE video_id=videoId;
+	INSERT INTO deletevideo (video_id, video_title, video_src, video_date, business_id, delete_video_date, delete_type, uid) VALUES(videoId, videoTitle, videoSrc, videoDate, businessId, SYSDATE(), deleteType, uid);
+	DELETE FROM video WHERE video_id=videoId;
+	COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for recoverAudioFromRecycleBinProc
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `recoverAudioFromRecycleBinProc`;
+delimiter ;;
+CREATE PROCEDURE `recoverAudioFromRecycleBinProc`(IN audioId int)
+BEGIN
+	DECLARE audioTitle VARCHAR(255);
+	DECLARE audioSrc VARCHAR(255);
+	DECLARE audioDate datetime;
+	DECLARE businessId int;
+	START TRANSACTION;
+	SELECT audio_title, audio_src, audio_date, business_id INTO audioTitle, audioSrc, audioDate, businessId FROM deleteaudio WHERE audio_id=audioId;
+	INSERT INTO video (audio_id, audio_title, audio_src, audio_date, business_id) VALUES(audioId, audioTitle, audioSrc, audioDate, businessId);
+	DELETE FROM deleteaudio WHERE audio_id=audioId;
+	COMMIT;
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for recoverVideoFromRecycleBinProc
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `recoverVideoFromRecycleBinProc`;
+delimiter ;;
+CREATE PROCEDURE `recoverVideoFromRecycleBinProc`(IN videoId int)
+BEGIN
+	DECLARE videoTitle VARCHAR(255);
+	DECLARE videoSrc VARCHAR(255);
+	DECLARE videoDate datetime;
+	DECLARE businessId int;
+	START TRANSACTION;
+	SELECT video_title, video_src, video_date, business_id INTO videoTitle, videoSrc, videoDate, businessId FROM deletevideo WHERE video_id=videoId;
+	INSERT INTO video (video_id, video_title, video_src, video_date, business_id) VALUES(videoId, videoTitle, videoSrc, videoDate, businessId);
+	DELETE FROM deletevideo WHERE video_id=videoId;
+	COMMIT;
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
