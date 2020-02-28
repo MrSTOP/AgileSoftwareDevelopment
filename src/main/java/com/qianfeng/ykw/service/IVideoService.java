@@ -31,6 +31,12 @@ public interface IVideoService {
     List<Video> selectVideoInfoByBusinessId(int businessId);
 
     /**
+     * 查询所有用户上传的视频数据
+     * @return
+     */
+    List<Video> selectAllVideo();
+
+    /**
      * 按指定要求查询用户视频
      * @param parameter
      * @return

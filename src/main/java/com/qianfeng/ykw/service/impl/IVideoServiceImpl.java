@@ -74,6 +74,11 @@ public class IVideoServiceImpl implements IVideoService {
     }
 
     @Override
+    public List<Video> selectAllVideo() {
+        return videoDAO.selectAllVideo();
+    }
+
+    @Override
     public List<Video> selectVideoByDateAndName(Map<String, Object> parameter) {
 
         String selectType = (String)parameter.get("selectType");

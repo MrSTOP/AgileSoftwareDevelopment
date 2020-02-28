@@ -61,6 +61,31 @@ public class VideoController {
         request.setAttribute("videoList", videoList);
         return "/pages/video/query_video";
     }
+
+    /**
+     * 查询所有商户所有视频
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryAllVideo")
+    public String queryAllVideo(HttpServletRequest request) {
+        List<Video> videoList = videoService.selectAllVideo();
+        request.setAttribute("videoList", videoList);
+        return "/pages/video/query_video";
+    }
+
+    /**
+     * 根据获取用户businessId查询对应音频
+     * @param businessId
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryVideoById")
+    public String queryVideoById(int businessId,HttpServletRequest request){
+        List<Video> videoList = videoService.selectVideoInfoByBusinessId(businessId);
+        request.setAttribute("videoList", videoList);
+        return "/pages/video/query_video";
+    }
     
     @RequestMapping("/deleteVideo")
     @ResponseBody

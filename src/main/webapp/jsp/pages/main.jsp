@@ -112,7 +112,7 @@
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/video/add_video.jsp">上传视频</a>
                         </li>
                         <li class="administratorFunc">
-                        <a class="J_menuItem" href="">商户视频</a>
+                        <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryAllVideo">商户视频</a>
                         </li>
                         <li class="">
                         <a class="J_menuItem" href="${pageContext.request.contextPath}/VideoController/queryRecycleBinVideo">回收站</a>
@@ -127,16 +127,16 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li class="administratorFunc">
-                            <a class="J_menuItem" href="graph_peity.html">音频列表</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAllAudio">音频列表</a>
                         </li>
                         <li class="administratorFunc">
                             <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAudioByOther">音频查询</a>
                         </li>
                         <li class="businessFunc">
-                            <a class="J_menuItem" href="graph_sparkline.html">上传音频</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/jsp/pages/audio/add_audio.jsp">上传音频</a>
                         </li>
                         <li class="businessFunc">
-                            <a class="J_menuItem" href="graph_metrics.html">商户音频</a>
+                            <a class="J_menuItem" href="${pageContext.request.contextPath}/AudioController/queryAudio">商户音频</a>
                         </li>
                     </ul>
                 </li>

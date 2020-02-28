@@ -45,6 +45,12 @@ public interface IVideoDAO {
      * @return
      */
     List<Video> selectVideo();
+
+    /**
+     * 查询所有用户上传的视频数据
+     * @return
+     */
+    List<Video> selectAllVideo();
     
     /**
      * 将视频移到回收站
