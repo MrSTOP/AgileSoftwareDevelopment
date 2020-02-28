@@ -27,14 +27,6 @@ public interface IAudioDAO {
     List<Audio> selectAllAudio();
 
     /**
-     * 通过用户ID查询音频
-     * @param businessId
-     * @return
-     */
-    List<Audio> selectAudioInfoByBusinessId(int businessId);
-
-
-    /**
      * 通过时间段查询音频
      * @param parameter
      * @return

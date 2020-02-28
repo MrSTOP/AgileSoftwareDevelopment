@@ -19,6 +19,8 @@
     <select id="selectAllAudio" resultType="com.qianfeng.ykw.pojo.Audio">
         SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
         WHERE audio.business_id = businessinfo.business_id
+    </select>
+
     <select id="selectAudioInfoByDate" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Audio">
             SELECT audio.audio_title, audio.audio_src, audio.audio_date, audio.audio_id, businessinfo.business_info_legal_person FROM audio, businessinfo
         WHERE audio.business_id = businessinfo.business_id

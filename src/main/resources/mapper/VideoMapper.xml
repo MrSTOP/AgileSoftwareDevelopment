@@ -13,6 +13,11 @@
         AND video.business_id=#{businessId}
     </select>
 
+    <select id="selectAllVideo" resultType="com.qianfeng.ykw.pojo.Video">
+        SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo
+        WHERE video.business_id = businessinfo.business_id
+    </select>
+
     <select id="selectVideoInfoByDate" parameterType="hashmap" resultType="com.qianfeng.ykw.pojo.Video">
             SELECT video.video_title, video.video_src, video.video_date, video.video_id, businessinfo.business_info_legal_person FROM video, businessinfo
         WHERE video.business_id = businessinfo.business_id

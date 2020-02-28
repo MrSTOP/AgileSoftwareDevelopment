@@ -81,13 +81,11 @@ public class AudioController {
      * @return
      */
     @RequestMapping("/queryAudioById")
-    public String queryAudioById(int businessId,HttpServletRequest request){
+    public String queryAudioById(int businessId,HttpServletRequest request) {
         List<Audio> audioList = audioService.selectAudioInfoByBusinessId(businessId);
         request.setAttribute("audioList", audioList);
         return "/pages/audio/query_audio";
-
-    @Autowired
-    IAudioService audioService;
+    }
 
     @RequestMapping("/queryAudioByOther")
     public String queryAudioByOther(String selectbusiness_name, String startdate, String enddate, HttpServletRequest request){
