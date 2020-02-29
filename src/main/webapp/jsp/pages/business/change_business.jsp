@@ -33,13 +33,13 @@
 <body class="gray-bg">
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>编辑管理员信息</h2>
+        <h2>编辑商户信息</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">管理员模块</a>
+                <a href="index.html">商户模块</a>
             </li>
             <li>
-                <strong>编辑管理员信息</strong>
+                <strong>编辑商户信息</strong>
             </li>
         </ol>
     </div>

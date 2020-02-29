@@ -77,7 +77,7 @@ public class VideoController {
     }
 
     /**
-     * 根据获取用户businessId查询对应音频
+     * 根据获取用户businessId查询对应视频
      * @param businessId
      * @param request
      * @return
