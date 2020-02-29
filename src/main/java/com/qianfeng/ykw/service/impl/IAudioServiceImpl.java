@@ -12,6 +12,7 @@ import com.qianfeng.ykw.service.IAudioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,6 +141,7 @@ public class IAudioServiceImpl implements IAudioService {
     }
     
     @Override
+    @Transactional
     public boolean deleteAudioPermanently(int audioId, HttpServletRequest request) {
         DeleteAudio deleteAudio = deleteAudioDAO.selectDeleteAudioById(audioId);
         if (deleteAudioDAO.deleteAudioFromRecycleBinById(audioId) > 0) {
