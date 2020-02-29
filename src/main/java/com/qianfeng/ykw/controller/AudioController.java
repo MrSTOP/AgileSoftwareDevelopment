@@ -197,7 +197,7 @@ public class AudioController {
             } else {
                 result.put("result", false);
             }
-        } catch (IOException e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
             result.put("result", false);
         }

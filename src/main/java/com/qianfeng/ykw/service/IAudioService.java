@@ -71,6 +71,6 @@ public interface IAudioService {
      * @param request
      * @return
      */
-    boolean deleteAudioPermanently(int audioId, HttpServletRequest request) throws IOException;
+    boolean deleteAudioPermanently(int audioId, HttpServletRequest request);
 
 }

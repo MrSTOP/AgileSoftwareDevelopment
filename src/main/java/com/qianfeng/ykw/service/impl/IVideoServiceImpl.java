@@ -11,6 +11,7 @@ import com.qianfeng.ykw.service.IVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,14 +141,20 @@ public class IVideoServiceImpl implements IVideoService {
     }
     
     @Override
-    public boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException {
-        String rootPath = request.getServletContext().getRealPath("");
+    @Transactional
+    public boolean deleteVideoPermanently(int videoId, HttpServletRequest request) {
         DeleteVideo deleteVideo = deleteVideoDAO.selectDeleteVideoById(videoId);
-        File videoFile = new File(rootPath, deleteVideo.getVideoSrc());
-        if (!videoFile.delete()) {
-            throw new IOException("Delete File Failed");
+        if (deleteVideoDAO.deleteVideoFromRecycleBinById(videoId) > 0) {
+            String rootPath = request.getServletContext().getRealPath("");
+            File videoFile = new File(rootPath, deleteVideo.getVideoSrc());
+            if (!videoFile.delete()) {
+                throw new IllegalStateException("Delete File Failed.");
+            } else {
+                return true;
+            }
+        } else {
+            return false;
         }
-        return deleteVideoDAO.deleteVideoFromRecycleBinById(videoId) > 0;
     }
     
     /**

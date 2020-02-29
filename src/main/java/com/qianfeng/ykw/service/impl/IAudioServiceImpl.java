@@ -7,6 +7,7 @@ import com.qianfeng.ykw.dao.IDeleteAudioDAO;
 import com.qianfeng.ykw.pojo.Audio;
 import com.qianfeng.ykw.pojo.Business;
 import com.qianfeng.ykw.pojo.DeleteAudio;
+import com.qianfeng.ykw.pojo.DeleteVideo;
 import com.qianfeng.ykw.service.IAudioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -139,14 +140,19 @@ public class IAudioServiceImpl implements IAudioService {
     }
     
     @Override
-    public boolean deleteAudioPermanently(int audioId, HttpServletRequest request) throws IOException {
-        String rootPath = request.getServletContext().getRealPath("");
+    public boolean deleteAudioPermanently(int audioId, HttpServletRequest request) {
         DeleteAudio deleteAudio = deleteAudioDAO.selectDeleteAudioById(audioId);
-        File audioFile = new File(rootPath, deleteAudio.getAudioSrc());
-        if (!audioFile.delete()) {
-            throw new IOException("Delete File Failed");
+        if (deleteAudioDAO.deleteAudioFromRecycleBinById(audioId) > 0) {
+            String rootPath = request.getServletContext().getRealPath("");
+            File audioFile = new File(rootPath, deleteAudio.getAudioSrc());
+            if (!audioFile.delete()) {
+                throw new IllegalStateException("Delete File Failed.");
+            } else {
+                return true;
+            }
+        } else {
+            return false;
         }
-        return deleteAudioDAO.deleteAudioFromRecycleBinById(audioId) > 0;
     }
     
     /**

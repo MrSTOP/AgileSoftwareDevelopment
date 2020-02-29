@@ -75,5 +75,5 @@ public interface IVideoService {
      * @param request
      * @return
      */
-    boolean deleteVideoPermanently(int videoId, HttpServletRequest request) throws IOException;
+    boolean deleteVideoPermanently(int videoId, HttpServletRequest request);
 }
